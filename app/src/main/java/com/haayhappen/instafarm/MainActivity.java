@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         channelssh.setOutputStream(baos);
 
         // Execute command
-        channelssh.setCommand("cd InstagramBot/;mkdir trololol;screen -S androidscreen");
+        channelssh.setCommand("cd InstagramBot/;screen -S androidscreen");
         channelssh.connect();
         channelssh.disconnect();
 
