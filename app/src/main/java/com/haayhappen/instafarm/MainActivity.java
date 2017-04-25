@@ -18,11 +18,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// assumes the current class is called MyLogger
-
 import java.io.ByteArrayOutputStream;
 import java.util.Properties;
 
+import static android.R.attr.button;
 import static android.R.attr.duration;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,27 +34,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        final Button button = (Button) findViewById(R.id.btn_ssh);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-                new AsyncTask<Integer, Void, Void>(){
-                    @Override
-                    protected Void doInBackground(Integer... params) {
-                        try {
-                            output = executeRemoteCommand("root", "5Keosniluro", "62.75.253.50", 22);
-                            Context context = getApplicationContext();
-
-                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
-                            toast.show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                }.execute(1);
-            }
-        });
+//        final Button button = (Button) findViewById(R.id.btn_ssh);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                // Perform action on click
+//                new AsyncTask<Integer, Void, Void>(){
+//                    @Override
+//                    protected Void doInBackground(Integer... params) {
+//                        try {
+//                            output = executeRemoteCommand("root", "5Keosniluro", "62.75.253.50", 22);
+//                            Context context = getApplicationContext();
+//
+//                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
+//                            toast.show();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        return null;
+//                    }
+//                }.execute(1);
+//            }
+//        });
 
     }
 
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         channelssh.setOutputStream(baos);
 
         // Execute command
-        channelssh.setCommand("cd InstagramBot/;screen -S androidscreen");
+        channelssh.setCommand("python checkuser.py hackingismylifeanonymous passwort");
         channelssh.connect();
         channelssh.disconnect();
 
