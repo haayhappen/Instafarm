@@ -81,7 +81,6 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
     }
 
-
     public static String executeRemoteCommand(String username, String password, String hostname, int port)
             throws Exception {
         JSch jsch = new JSch();
@@ -102,7 +101,8 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
         channelssh.setOutputStream(baos);
 
         // Execute command
-        channelssh.setCommand("cd Instagram-API-python;python checkuser.py hackingismylifeanonymous passwort");
+//        channelssh.setCommand("cd Instagram-API-python/;python checkuser.py hackingismylifeanonymous passwort");
+        channelssh.setCommand("cd Instagram-API-python/;mkdir testdirectoryworking");
         channelssh.connect();
         channelssh.disconnect();
 
