@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import static android.R.attr.delay;
+import static android.R.attr.port;
 
 /**
  * Created by Fynn on 26.04.2017.
@@ -58,10 +59,31 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
             try {
                 //response = executeRemoteCommand("root", "5Keosniluro", "62.75.253.50", 22);
-                response = executeRemoteCommand("testuser", "testpw", hostname, 22);
-//                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
-//                            toast.show();
-                } catch (Exception e) {
+//                response = executeRemoteCommand("testuser", "testpw", hostname, 22);
+                JSch jsch = new JSch();
+                Session session = jsch.getSession("instafarm", "62.75.253.50", 22);
+                session.setPassword("instafarm");
+
+                // Avoid asking for key confirmation
+                Properties prop = new Properties();
+                prop.put("StrictHostKeyChecking", "no");
+                session.setConfig(prop);
+
+                session.connect();
+
+                // SSH Channel
+                ChannelExec channelssh = (ChannelExec)
+                        session.openChannel("exec");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                channelssh.setOutputStream(baos);
+
+                // Execute command
+//        channelssh.setCommand("cd Instagram-API-python/;python checkuser.py hackingismylifeanonymous passwort");
+                channelssh.setCommand("cd Instagram-API-python/ ;touch hierlandetderuser.txt");
+                channelssh.connect();
+                channelssh.disconnect();
+
+            } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -81,31 +103,31 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
     }
 
-    public static String executeRemoteCommand(String username, String password, String hostname, int port)
-            throws Exception {
-        JSch jsch = new JSch();
-        Session session = jsch.getSession(username, hostname, port);
-        session.setPassword(password);
-
-        // Avoid asking for key confirmation
-        Properties prop = new Properties();
-        prop.put("StrictHostKeyChecking", "no");
-        session.setConfig(prop);
-
-        session.connect();
-
-        // SSH Channel
-        ChannelExec channelssh = (ChannelExec)
-                session.openChannel("exec");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        channelssh.setOutputStream(baos);
-
-        // Execute command
-//        channelssh.setCommand("cd Instagram-API-python/;python checkuser.py hackingismylifeanonymous passwort");
-        channelssh.setCommand("cd Instagram-API-python/;mkdir testdirectoryworking");
-        channelssh.connect();
-        channelssh.disconnect();
-
-        return baos.toString();
-    }
+//    public static String executeRemoteCommand(String username, String password, String hostname, int port)
+//            throws Exception {
+//        JSch jsch = new JSch();
+//        Session session = jsch.getSession(username, hostname, port);
+//        session.setPassword(password);
+//
+//        // Avoid asking for key confirmation
+//        Properties prop = new Properties();
+//        prop.put("StrictHostKeyChecking", "no");
+//        session.setConfig(prop);
+//
+//        session.connect();
+//
+//        // SSH Channel
+//        ChannelExec channelssh = (ChannelExec)
+//                session.openChannel("exec");
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        channelssh.setOutputStream(baos);
+//
+//        // Execute command
+////        channelssh.setCommand("cd Instagram-API-python/;python checkuser.py hackingismylifeanonymous passwort");
+//        channelssh.setCommand("touch hierlandetderuser.txt");
+//        channelssh.connect();
+//        channelssh.disconnect();
+//
+//        return baos.toString();
+//    }
 }
