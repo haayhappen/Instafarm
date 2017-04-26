@@ -43,29 +43,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-//        final Button button = (Button) findViewById(R.id.btn_ssh);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                // Perform action on click
-//                new AsyncTask<Integer, Void, Void>(){
-//                    @Override
-//                    protected Void doInBackground(Integer... params) {
-//                        try {
-//                            output = executeRemoteCommand("root", "5Keosniluro", "62.75.253.50", 22);
-//                            Context context = getApplicationContext();
-//
-//                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
+        //                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
 //                            toast.show();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        return null;
-//                    }
-//                }.execute(1);
-//            }
-//        });
 
-//        myToolbar.showOverflowMenu();
     }
 
     @Override
@@ -97,30 +77,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static String executeRemoteCommand(String username, String password, String hostname, int port)
-            throws Exception {
-        JSch jsch = new JSch();
-        Session session = jsch.getSession(username, hostname, port);
-        session.setPassword(password);
-
-        // Avoid asking for key confirmation
-        Properties prop = new Properties();
-        prop.put("StrictHostKeyChecking", "no");
-        session.setConfig(prop);
-
-        session.connect();
-
-        // SSH Channel
-        ChannelExec channelssh = (ChannelExec)
-                session.openChannel("exec");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        channelssh.setOutputStream(baos);
-
-        // Execute command
-        channelssh.setCommand("python checkuser.py hackingismylifeanonymous passwort");
-        channelssh.connect();
-        channelssh.disconnect();
-
-        return baos.toString();
-    }
 }
