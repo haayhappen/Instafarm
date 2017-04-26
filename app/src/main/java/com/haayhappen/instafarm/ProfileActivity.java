@@ -19,13 +19,14 @@ public class ProfileActivity extends AppCompatActivity {
     private String username;
     private String passwort;
 
-    Context context = getApplicationContext();
+    //Context context = getApplicationContext();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Profile");
         setContentView(R.layout.activity_profile);
+        setTitle("Profile");
+
 
     }
     public void backtomain(View view) {
@@ -36,6 +37,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void signin(View view) {
 
+
+        Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
                             toast.show();
 
@@ -49,7 +52,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void processFinish(String response) {
                 //Do something with response
-
+                Context context = getApplicationContext();
+                Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
+//                            toast.show();
             }
         });
     }
