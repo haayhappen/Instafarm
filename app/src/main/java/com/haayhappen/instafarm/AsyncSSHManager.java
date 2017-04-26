@@ -58,7 +58,7 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
             try {
                 //response = executeRemoteCommand("root", "5Keosniluro", "62.75.253.50", 22);
-                response = executeRemoteCommand(username, password, hostname, 22);
+                response = executeRemoteCommand("testuser", "testpw", hostname, 22);
 //                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
 //                            toast.show();
                 } catch (Exception e) {
