@@ -39,7 +39,7 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
     private static ChannelShell channel;
     private static String username = "";
     private static String password = "";
-    private static String hostname = "";
+    private static String hostname = "62.75.253.50";
 
         public interface AsyncResponse {
             void processFinish(String response);
@@ -58,7 +58,7 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
             try {
                 //response = executeRemoteCommand("root", "5Keosniluro", "62.75.253.50", 22);
-                response = executeRemoteCommand(username, password, "62.75.253.50", 22);
+                response = executeRemoteCommand(username, password, hostname, 22);
 //                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
 //                            toast.show();
                 } catch (Exception e) {
@@ -102,7 +102,7 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
         channelssh.setOutputStream(baos);
 
         // Execute command
-        channelssh.setCommand("python checkuser.py hackingismylifeanonymous passwort");
+        channelssh.setCommand("cd Instagram-API-python;python checkuser.py hackingismylifeanonymous passwort");
         channelssh.connect();
         channelssh.disconnect();
 

@@ -53,8 +53,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void processFinish(String response) {
                 //Do something with response
                 Context context = getApplicationContext();
-                Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
-//                            toast.show();
+                Toast toast = Toast.makeText(context, response, Toast.LENGTH_LONG);
+                            toast.show();
             }
         });
     }
