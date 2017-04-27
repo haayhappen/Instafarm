@@ -1,5 +1,6 @@
 package com.haayhappen.instafarm;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         //                            Toast toast = Toast.makeText(context,output, Toast.LENGTH_LONG);
 //                            toast.show();
+
+        //Context context = getApplicationContext();
+
 
     }
 
