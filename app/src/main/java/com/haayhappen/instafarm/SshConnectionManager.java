@@ -48,14 +48,14 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         return result;
     }
 
-    private static Session getSession(){
+    private Session getSession(){
         if(session == null || !session.isConnected()){
             session = connect(hostname,username,password);
         }
         return session;
     }
 
-    private static Channel getChannel(){
+    private Channel getChannel(){
         if(channel == null || !channel.isConnected()){
             try{
                 channel = (ChannelShell)getSession().openChannel("shell");
@@ -68,7 +68,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         return channel;
     }
 
-    private static Session connect(String hostname, String username, String password){
+    private Session connect(String hostname, String username, String password){
 
         JSch jSch = new JSch();
 
@@ -91,7 +91,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
     }
 
-    private static String executeCommands(List<String> commands){
+    private String executeCommands(List<String> commands){
 
         try{
             Channel channel=getChannel();
@@ -110,7 +110,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         return "Error getting channel output through execute commands";
     }
 
-    private static void sendCommands(Channel channel, List<String> commands){
+    private void sendCommands(Channel channel, List<String> commands){
 
         try{
             PrintStream out = new PrintStream(channel.getOutputStream());
@@ -128,7 +128,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
     }
 
-    private static String readChannelOutput(Channel channel){
+    private String readChannelOutput(Channel channel){
 
         byte[] buffer = new byte[1024];
 
@@ -166,9 +166,13 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         return "error in readchannel";
     }
 
-    public static void close(){
-        channel.disconnect();
-        session.disconnect();
+    public void close(){
+        if(channel.isConnected()){
+            channel.disconnect();
+        }
+        if (session.isConnected()){
+            session.disconnect();
+        }
         Log.d(TAG,"Disconnected channel and session");
     }
 
