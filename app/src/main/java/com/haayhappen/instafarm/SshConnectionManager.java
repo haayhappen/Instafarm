@@ -40,6 +40,9 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
+        this.hostname = params[0];
+        this.username = params[1];
+        this.password = params[2];
         List<String> commands = new ArrayList<String>();
         commands.add("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
 
