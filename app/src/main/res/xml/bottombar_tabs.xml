@@ -3,15 +3,18 @@
     <tabs>
         <tab
             id="@+id/tab_settings"
-            icon="@drawable/settings"
-            title="Settings" />
+            icon="@drawable/settingswhite"
+            title="Settings"
+            barColorWhenSelected="#fb6753"/>
         <tab
             id="@+id/tab_profile"
-            icon="@drawable/profile"
-            title="Profile" />
+            icon="@drawable/profile1"
+            title="Profile"
+            barColorWhenSelected="#fc8b53"/>
         <tab
             id="@+id/tab_bot"
-            icon="@drawable/sofa"
-            title="Bot" />
+            icon="@drawable/starwhite"
+            title="Bot"
+            barColorWhenSelected="#fdd55a"/>
     </tabs>
 <!--</PreferenceScreen>-->
