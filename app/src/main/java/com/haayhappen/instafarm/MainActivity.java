@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarTab;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -36,16 +37,23 @@ public class MainActivity extends AppCompatActivity {
         //Context context = getApplicationContext();
 
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 if (tabId == R.id.tab_settings) {
                     // The tab with id R.id.tab_favorites was selected,
                     // change your content accordingly.
+                    BottomBarTab bot = bottomBar.getTabWithId(R.id.tab_bot);
+                    bot.setBadgeCount(5);
+
+// Remove the badge when you're done with it.
+                    //nearby.removeBadge();
+
                 }
             }
         });
+
 
         ///////////////////////////////////////////////////////////////////////
         ////////////////////////Only for reselection///////////////////////////
