@@ -94,16 +94,16 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
                     ChannelExec channel = null;
 
                     try {
-                        JSch jSch = new JSch();
-
-                        session = jSch.getSession("instafarm", "62.75.253.50", 22);
-                        session.connect();
+                        JSch jsch = new JSch();
+                        session = jsch.getSession("instafarm", "62.75.253.50", 22);
+                        session.setPassword("instafarm");
 
                         // Avoid asking for key confirmation
                         Properties prop = new Properties();
                         prop.put("StrictHostKeyChecking", "no");
                         session.setConfig(prop);
 
+                        session.connect();
                         channel = (ChannelExec) session.openChannel("exec");
                         channel.setCommand("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
                         channel.setInputStream(null);
