@@ -4,33 +4,19 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabReselectListener;
+import com.roughike.bottombar.OnTabSelectListener;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import java.io.ByteArrayOutputStream;
-import java.util.Properties;
-
-import static android.R.attr.button;
-import static android.R.attr.duration;
-import static android.R.id.message;
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
     String output;
@@ -50,6 +36,32 @@ public class MainActivity extends AppCompatActivity {
         //Context context = getApplicationContext();
 
 
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                if (tabId == R.id.tab_settings) {
+                    // The tab with id R.id.tab_favorites was selected,
+                    // change your content accordingly.
+                }
+            }
+        });
+
+        ///////////////////////////////////////////////////////////////////////
+        ////////////////////////Only for reselection///////////////////////////
+        ///////////////////////////////////////////////////////////////////////
+        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
+            @Override
+            public void onTabReSelected(@IdRes int tabId) {
+                if (tabId == R.id.tab_settings) {
+                    // The tab with id R.id.tab_favorites was reselected,
+                    // change your content accordingly.
+                }
+            }
+        });
+        ///////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
     }
 
     @Override

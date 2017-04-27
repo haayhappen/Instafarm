@@ -1,0 +1,17 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <tabs>
+        <tab
+            id="@+id/tab_settings"
+            icon="@drawable/settings"
+            title="Settings" />
+        <tab
+            id="@+id/tab_profile"
+            icon="@drawable/profile"
+            title="Profile" />
+        <tab
+            id="@+id/tab_bot"
+            icon="@drawable/sofa"
+            title="Bot" />
+    </tabs>
+<!--</PreferenceScreen>-->
