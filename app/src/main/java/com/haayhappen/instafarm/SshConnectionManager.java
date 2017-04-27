@@ -142,7 +142,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
                         break;
                     }
                     line = new String(buffer, 0, i);
-                    Log.d(TAG,line);
+                    //Log.d(TAG,line);
 
                 }
 
@@ -155,7 +155,9 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
                 }
                 try {
                     Thread.sleep(1000);
-                } catch (Exception ee){}
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 return line;
             }
@@ -167,12 +169,12 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
     }
 
     public void close(){
-        if(channel.isConnected()){
-            channel.disconnect();
-        }
-        if (session.isConnected()){
-            session.disconnect();
-        }
+//        if(channel.isConnected()){
+//            channel.disconnect();
+//        }
+//        if (session.isConnected()){
+//            session.disconnect();
+//        }
         Log.d(TAG,"Disconnected channel and session");
     }
 
