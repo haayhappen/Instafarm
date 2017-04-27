@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -23,7 +24,7 @@ import static android.content.ContentValues.TAG;
 public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
     private static Session session;
-    private static ChannelShell channel;
+    private static Channel channel;
     private static String username = "";
     private static String password = "";
     private static String hostname = "";
@@ -61,7 +62,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
     private Channel getChannel(){
         if(channel == null || !channel.isConnected()){
             try{
-                channel = (ChannelShell)getSession().openChannel("shell");
+                channel = (Channel)getSession().openChannel("shell");
                 channel.connect();
 
             }catch(Exception e){
@@ -122,9 +123,13 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
             for(String command : commands){
                 out.println(command);
             }
-            out.println("exit");
+            out.println("cd Instagram-API-python/");
+            out.println("python checkuser.py hackingismylifeanonymous passwort");
+            //out.println("exit");
 
             out.flush();
+            //channel.setCommand("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
+
         }catch(Exception e){
             Log.d(TAG,"Error while sending commands: "+ e);
         }
