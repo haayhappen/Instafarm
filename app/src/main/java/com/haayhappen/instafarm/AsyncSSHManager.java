@@ -37,22 +37,30 @@ import static android.R.attr.port;
 public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
         private static final String TAG = "SSH MANAGER";
-        private AsyncResponse asyncResponse;
+//        private AsyncResponse asyncResponse;
         private String response="";
         private static Session session;
         private static ChannelShell channel;
         private static String username = "";
         private static String password = "";
         private static String hostname = "62.75.253.50";
+    public AsyncResponse delegate = null;
 
-        public interface AsyncResponse {
-            void processFinish(String response);
-        }
+//        public interface AsyncResponse {
+//            void processFinish(String response);
+//        }
 
-    public AsyncSSHManager(String username, String passwort, AsyncResponse asyncResponse) {
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+    public AsyncSSHManager(AsyncResponse delegate){
+        this.delegate = delegate;
+    }
+
+    public AsyncSSHManager(String username, String passwort/*, AsyncResponse asyncResponse*/) {
         this.username = username;
         this.password= passwort;
-        this.asyncResponse = asyncResponse;
+        //this.asyncResponse = asyncResponse;
     }
 
         @Override
@@ -88,7 +96,7 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
                 channelssh.disconnect();
 */
 
-                    StringBuffer result = new StringBuffer();
+                    String result = new String("");
 
                     Session session = null;
                     ChannelExec channel = null;
@@ -113,18 +121,33 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
                         //waitForChannelClosed(channel);
                         //Thread.sleep(10000L);
+                        while(channel.isConnected()){
+                            Thread.sleep(1000L);
+                        }
 
                         if (channel.getExitStatus() != 0) {
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stderr));
-                            readAll(bufferedReader, result);
+                            //readAll(bufferedReader, result);
+                            String line = "";
+                            while((line = bufferedReader.readLine()) != null){
+
+                            }
+                            result +=line+"";
 
                             throw new Exception(result.toString());
                         } else {
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stdout));
-                            result = readAll(bufferedReader, result);
-                            response = String.valueOf(readAll(bufferedReader, result));
+                                //result = readAll(bufferedReader, result);
+                                //response = String.valueOf(readAll(bufferedReader, result));
+
+                            String line = "";
+                            while((line = bufferedReader.readLine()) != null){
+
+                            }
+                            result +=line+"";
                         }
-                    } catch (Exception e) {
+
+                        } catch (Exception e) {
                         //throw new Exception(e);
                         e.printStackTrace();
                     } finally {
@@ -141,32 +164,32 @@ public class AsyncSSHManager extends AsyncTask<String, Void, String> {
 
     }
 
-    private StringBuffer readAll(BufferedReader bufferedReader, StringBuffer result) {
-        try  {
-            long length = 0;
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.isEmpty()) {
-                    break;
-                }
-                length += line.length();
-            }
-            //System.out.println("Read length: " + length);
-            //System.out.println("Bufferd Reader output: "+line);
-            Log.d(TAG, "read length " + length);
-            Log.d(TAG, "buffered reader output " + line);
+//    private StringBuffer readAll(BufferedReader bufferedReader, StringBuffer result) {
+//        try  {
+//            long length = 0;
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                if (line.isEmpty()) {
+//                    break;
+//                }
+//                length += line.length();
+//            }
+//            //System.out.println("Read length: " + length);
+//            //System.out.println("Bufferd Reader output: "+line);
+//            Log.d(TAG, "read length " + length);
+//            Log.d(TAG, "buffered reader output " + line);
+//
+//            return new StringBuffer(line +result);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//return new StringBuffer("Error handling shell output");
+//    }
 
-            return new StringBuffer(line +result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-return new StringBuffer("Error handling shell output");
-    }
-
-    private void waitForChannelClosed(ChannelExec channel) {
-
-    }
+//    private void waitForChannelClosed(ChannelExec channel) {
+//
+//    }
 
         @Override
         protected void onPreExecute () {
@@ -174,12 +197,13 @@ return new StringBuffer("Error handling shell output");
     }
 
         @Override
-        protected void onPostExecute (String response){
-        super.onPostExecute(response);
+        protected void onPostExecute (String result){
+            delegate.processFinish(result);
         Log.d(TAG, "SSH Transfer complete: " + response);
-        asyncResponse.processFinish(response);
 
     }
+
+
 
 //    public static String executeRemoteCommand(String username, String password, String hostname, int port)
 //            throws Exception {

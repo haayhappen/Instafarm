@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static android.R.attr.duration;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity  {
 
     private String username;
     private String passwort;
@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void signin(View view) {
 
-
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
                             toast.show();
@@ -48,20 +47,26 @@ public class ProfileActivity extends AppCompatActivity {
         this.username = usernameEditText.getText().toString();
         this.passwort = passwordEditText.getText().toString();
 
-        AsyncSSHManager asyncTask = new AsyncSSHManager(username,passwort,new AsyncSSHManager.AsyncResponse() {
-            @Override
-            public void processFinish(String response) {
-                //Do something with response
-                Context context = getApplicationContext();
-                Toast toast = Toast.makeText(context, "Async Task finished! with response: "+response, Toast.LENGTH_LONG);
-                            toast.show();
-            }
-        });
+        SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(new SshConnectionManager.AsyncResponse(){
 
-        try {
-            asyncTask.execute(username,passwort);
-        } catch (Exception e) {
-            e.getMessage();
-        }
+            @Override
+            public void processFinish(String output){
+                //Here you will receive the result fired from async class
+                //of onPostExecute(result) method.
+                showOutput(output);
+            }
+        }).execute(username,passwort);
+
+//        try {
+//            asyncTask.execute(username,passwort);
+//        } catch (Exception e) {
+//            e.getMessage();
+//        }
+    }
+
+    public void showOutput(String response){
+        Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context, "Async Task finished! with response: "+response, Toast.LENGTH_LONG);
+                            toast.show();
     }
 }
