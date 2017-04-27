@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity  {
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
                             toast.show();
-
+        try {
         EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
@@ -56,7 +56,9 @@ public class ProfileActivity extends AppCompatActivity  {
                 showOutput(output);
             }
         }).execute(username,passwort);
-
+        } catch (Exception e) {
+            e.getMessage();
+        }
 //        try {
 //            asyncTask.execute(username,passwort);
 //        } catch (Exception e) {
