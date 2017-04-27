@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity  {
                 //of onPostExecute(result) method.
                 showOutput(output);
             }
-        }).execute(username,passwort);
+        }).execute("62.75.253.50",username,passwort);
         } catch (Exception e) {
             e.getMessage();
         }

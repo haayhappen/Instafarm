@@ -77,11 +77,11 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
         try {
 
-            session = jSch.getSession(username, hostname, 22);
+            session = jSch.getSession("instafarm","62.75.253.50", 22);
             Properties config = new Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
-            session.setPassword(password);
+            session.setPassword("instafarm");
 
             Log.d(TAG,"Connecting SSH to " + hostname + " - Please wait for few seconds... ");
             session.connect();
@@ -172,12 +172,12 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
     }
 
     public void close(){
-//        if(channel.isConnected()){
-//            channel.disconnect();
-//        }
-//        if (session.isConnected()){
-//            session.disconnect();
-//        }
+        if(channel.isConnected()){
+            channel.disconnect();
+        }
+        if (session.isConnected()){
+            session.disconnect();
+        }
         Log.d(TAG,"Disconnected channel and session");
     }
 
