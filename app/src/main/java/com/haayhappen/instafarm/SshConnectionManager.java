@@ -41,20 +41,20 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        this.hostname = params[0];
-        this.username = params[1];
-        this.password = params[2];
+        //this.hostname = params[0]; //"62.75.253.50"
+        this.username = params[0]; //instagram username
+        this.password = params[1]; //instagram passwort
         List<String> commands = new ArrayList<String>();
         commands.add("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
 
-        result = executeCommands(commands);
+        result = executeCommands(username,password);
         close();
         return result;
     }
 
     private Session getSession(){
         if(session == null || !session.isConnected()){
-            session = connect(hostname,username,password);
+            session = connect();
         }
         return session;
     }
@@ -62,7 +62,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
     private Channel getChannel(){
         if(channel == null || !channel.isConnected()){
             try{
-                channel = (Channel)getSession().openChannel("shell");
+                channel = getSession().openChannel("shell");
                 channel.connect();
 
             }catch(Exception e){
@@ -72,7 +72,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         return channel;
     }
 
-    private Session connect(String hostname, String username, String password){
+    private Session connect(){
 
         JSch jSch = new JSch();
 
@@ -82,6 +82,8 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
             Properties config = new Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
+            //TODO get Secret Key from server instead of passwort string
+            //Just for debugging-->
             session.setPassword("instafarm");
 
             Log.d(TAG,"Connecting SSH to " + hostname + " - Please wait for few seconds... ");
@@ -95,13 +97,13 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
     }
 
-    private String executeCommands(List<String> commands){
+    private String executeCommands(String username,String passwort/*List<String> commands*/){
 
         try{
             Channel channel=getChannel();
 
             Log.d(TAG,"Sending commands...");
-            sendCommands(channel, commands);
+            sendCommands(channel,username,passwort/*, commands*/);
 
             String output;
             output = readChannelOutput(channel);
@@ -114,17 +116,20 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         return "Error getting channel output through execute commands";
     }
 
-    private void sendCommands(Channel channel, List<String> commands){
+    private void sendCommands(Channel channel,String username,String passwort/*, List<String> commands*/){
 
         try{
             PrintStream out = new PrintStream(channel.getOutputStream());
 
-            out.println("#!/bin/bash");
-            for(String command : commands){
-                out.println(command);
-            }
+            //out.println("#!/bin/bash");
+//            for(String command : commands){
+//                out.println(command);
+//            }
+
+            //changing directory to instagram api
+            //& run file to check if user has a valid instagram account
             out.println("cd Instagram-API-python/");
-            out.println("python checkuser.py hackingismylifeanonymous passwort");
+            out.println("python checkuser.py "+username+" "+passwort);
             //out.println("exit");
 
             out.flush();
