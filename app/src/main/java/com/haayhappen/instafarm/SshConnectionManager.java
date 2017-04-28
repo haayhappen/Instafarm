@@ -44,8 +44,8 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         //this.hostname = params[0]; //"62.75.253.50"
         this.username = params[0]; //instagram username
         this.password = params[1]; //instagram passwort
-        List<String> commands = new ArrayList<String>();
-        commands.add("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
+        //List<String> commands = new ArrayList<String>();
+        //commands.add("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
 
         result = executeCommands(username,password);
         close();
@@ -147,7 +147,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
         try{
             InputStream in = channel.getInputStream();
-            String line = "";
+            String line = "Server: ";
             while (true){
                 while (in.available() > 0) {
                     int i = in.read(buffer, 0, 1024);
