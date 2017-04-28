@@ -9,7 +9,9 @@ import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,43 +144,58 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
     }
 
     private String readChannelOutput(Channel channel){
-
-        byte[] buffer = new byte[1024];
-
-        try{
-            InputStream in = channel.getInputStream();
-            String line = "Server: ";
-            while (true){
-                while (in.available() > 0) {
-                    int i = in.read(buffer, 0, 1024);
-                    if (i < 0) {
-                        break;
-                    }
-                    line = new String(buffer, 0, i);
-                    //Log.d(TAG,line);
-
-                }
-
-                if(line.contains("logout")){
-                    break;
-                }
-
-                if (channel.isClosed()){
-                    break;
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                return line;
+        String output ="";
+        try {
+            InputStream inStr = channel.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inStr));
+            while (!(output += reader.readLine()).contains("done"))
+            {
+                Log.d(TAG,"Output: " + output);
             }
-        }catch(Exception e){
-            Log.d(TAG,"Error while reading channel output: "+ e);
+            String test = output;
+            return test;
         }
+        catch (Exception e){e.printStackTrace();}
 
-        return "error in readchannel";
+
+
+        return output;
+//        byte[] buffer = new byte[1024];
+//
+//        try{
+//            InputStream in = channel.getInputStream();
+//            String line = "Server: ";
+//            while (true){
+//                while (in.available() > 0) {
+//                    int i = in.read(buffer, 0, 1024);
+//                    if (i < 0) {
+//                        break;
+//                    }
+//                    line = new String(buffer, 0, i);
+//                    //Log.d(TAG,line);
+//
+//                }
+//
+//                if(line.contains("logout")){
+//                    break;
+//                }
+//
+//                if (channel.isClosed()){
+//                    break;
+//                }
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//
+//                return line;
+//            }
+//        }catch(Exception e){
+//            Log.d(TAG,"Error while reading channel output: "+ e);
+//        }
+//
+//        return "error in readchannel";
     }
 
     public void close(){
