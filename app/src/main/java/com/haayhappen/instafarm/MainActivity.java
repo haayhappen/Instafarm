@@ -53,19 +53,11 @@ public class MainActivity extends AppCompatActivity {
         vpPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-//                Context context = getApplicationContext();
-//                Toast toast = Toast.makeText(context, "onpagescrolled position: "+position+"position offset: "+positionOffset+"positionoffsetpixels: "+positionOffsetPixels, Toast.LENGTH_LONG);
-//                toast.show();
             }
 
+            //When Tabs are swiped, the menu selection is changed accordingly
             @Override
             public void onPageSelected(int position) {
-
-                Context context = getApplicationContext();
-                Toast toast = Toast.makeText(context, "position: "+position, Toast.LENGTH_SHORT);
-                toast.show();
-
                 BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
                 if (position == 0){
                     bottomBar.selectTabAtPosition(0);
@@ -79,10 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
-//                Context context = getApplicationContext();
-//                Toast toast = Toast.makeText(context, "state: "+state, Toast.LENGTH_SHORT);
-//                toast.show();
             }
         });
 
