@@ -6,108 +6,27 @@
     android:layout_height="match_parent"
     tools:context="com.haayhappen.instafarm.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="385dp"
-        android:layout_height="56dp"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/my_toolbar"-->
+        <!--android:layout_width="385dp"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:elevation="4dp"-->
+        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true" />-->
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="56dp"
-        android:text="Automation"
-        android:textSize="26sp"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
-        android:layout_marginStart="14dp"
-        android:layout_below="@+id/guideline"
-        android:layout_toRightOf="@+id/guideline"
-        android:layout_toEndOf="@+id/guideline" />
-
-    <Switch
-        android:id="@+id/switch2"
-        android:layout_width="150dp"
-        android:layout_height="33dp"
-        android:text="Like"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.033"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
-        android:layout_below="@+id/textView9"
-        android:layout_alignLeft="@+id/textView9"
-        android:layout_alignStart="@+id/textView9"
-        android:layout_marginTop="11dp" />
-
-    <Switch
-        android:id="@+id/switch3"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:text="Follow"
-        android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.028"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch2"
-        android:layout_below="@+id/switch2"
-        android:layout_alignLeft="@+id/switch2"
-        android:layout_alignStart="@+id/switch2" />
-
-    <Switch
-        android:id="@+id/switch4"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Unfollow"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch3"
-        app:layout_constraintHorizontal_bias="0.038"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/switch5"
-        android:layout_alignLeft="@+id/switch5"
-        android:layout_alignStart="@+id/switch5" />
-
-    <Switch
-        android:id="@+id/switch5"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Comment"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch4"
-        app:layout_constraintHorizontal_bias="0.038"
-        android:layout_below="@+id/switch3"
-        android:layout_alignLeft="@+id/textView9"
-        android:layout_alignStart="@+id/textView9"
-        android:layout_marginTop="10dp" />
-
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        app:layout_constraintGuide_begin="192dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="192dp" />
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="508dp"
+        android:layout_below="@+id/my_toolbar" />
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"

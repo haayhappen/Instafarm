@@ -136,7 +136,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
 
             out.flush();
             //channel.setCommand("cd Instagram-API-python/ ;python checkuser.py hackingismylifeanonymous passwort");
-
+            Log.d(TAG,"Sending command "+out.toString()+" to Server");
         }catch(Exception e){
             Log.d(TAG,"Error while sending commands: "+ e);
         }
