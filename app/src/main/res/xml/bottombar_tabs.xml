@@ -5,19 +5,19 @@
             id="@+id/tab_settings"
             icon="@drawable/settingswhite"
             title="Settings"
-            barColorWhenSelected="#fb6753"
+            barColorWhenSelected="@color/colorPrimary"
             badgeBackgroundColor="#FFFFFF"/>
         <tab
             id="@+id/tab_profile"
             icon="@drawable/profile1"
             title="Profile"
-            barColorWhenSelected="#fc8b53"
+            barColorWhenSelected="@color/colorPrimary"
             badgeBackgroundColor="#FFFFFF"/>
         <tab
             id="@+id/tab_bot"
             icon="@drawable/starwhite"
             title="Bot"
-            barColorWhenSelected="#fdd55a"
+            barColorWhenSelected="@color/colorPrimary"
             badgeBackgroundColor="#FFFFFF"/>
     </tabs>
 <!--</PreferenceScreen>-->

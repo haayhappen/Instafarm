@@ -35,36 +35,36 @@ public class ProfileActivity extends AppCompatActivity  {
         startActivity(intent);
     }
 
-    public void signin(View view) {
-
-        Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
-                            toast.show();
-        try {
-        EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
-        EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
-
-        this.username = usernameEditText.getText().toString();
-        this.passwort = passwordEditText.getText().toString();
-
-        SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(new SshConnectionManager.AsyncResponse(){
-
-            @Override
-            public void processFinish(String output){
-                //Here you will receive the result fired from async class
-                //of onPostExecute(result) method.
-                showOutput(output);
-            }
-        }).execute(username,passwort);
-        } catch (Exception e) {
-            e.getMessage();
-        }
+//    public void signin(View view) {
+//
+//        Context context = getApplicationContext();
+//        Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
+//                            toast.show();
 //        try {
-//            asyncTask.execute(username,passwort);
+//        EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
+//        EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+//
+//        this.username = usernameEditText.getText().toString();
+//        this.passwort = passwordEditText.getText().toString();
+//
+//        SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(mcon new SshConnectionManager.AsyncResponse(){
+//
+//            @Override
+//            public void processFinish(String output){
+//                //Here you will receive the result fired from async class
+//                //of onPostExecute(result) method.
+//                showOutput(output);
+//            }
+//        }).execute(username,passwort);
 //        } catch (Exception e) {
 //            e.getMessage();
 //        }
-    }
+////        try {
+////            asyncTask.execute(username,passwort);
+////        } catch (Exception e) {
+////            e.getMessage();
+////        }
+//    }
 
     public void showOutput(String response){
         Context context = getApplicationContext();

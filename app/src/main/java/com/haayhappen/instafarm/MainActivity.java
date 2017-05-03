@@ -46,18 +46,24 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     String output;
     private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
     //    private static final int NUM_PAGES = 3;
-    private ViewPager mPager;
+    private ViewPager vpPager;
     private PagerAdapter mPagerAdapter;
     FragmentPagerAdapter adapterViewPager;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        vpPager = (ViewPager) findViewById(R.id.pager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
+        Log.d(TAG,"current page: "+ vpPager.getCurrentItem());
 
         vpPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -90,21 +96,16 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 if (tabId == R.id.tab_settings) {
-                    ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
                     vpPager.setCurrentItem(0);
 //                    The tab with id R.id.tab_favorites was selected, change your content accordingly.
 //                    BottomBarTab bot = bottomBar.getTabWithId(R.id.tab_bot);
 //                    bot.setBadgeCount(5);
 //                    Remove the badge when you're done with it.
 //                    nearby.removeBadge();
-
                 } else if (tabId == R.id.tab_profile) {
-                    ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
                     vpPager.setCurrentItem(1);
 
                 } else if (tabId == R.id.tab_bot) {
-
-                    ViewPager vpPager = (ViewPager) findViewById(R.id.pager);
                     vpPager.setCurrentItem(2);
                 }
             }
@@ -129,13 +130,13 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
+        if (vpPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            vpPager.setCurrentItem(vpPager.getCurrentItem() - 1);
         }
     }
 
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             this.username = usernameEditText.getText().toString();
             this.passwort = passwordEditText.getText().toString();
 
-            SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(new SshConnectionManager.AsyncResponse() {
+            SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(mContext,new SshConnectionManager.AsyncResponse() {
 
                 @Override
                 public void processFinish(String output) {
