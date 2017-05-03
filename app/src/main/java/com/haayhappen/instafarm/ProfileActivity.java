@@ -68,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity  {
 
     public void showOutput(String response){
         Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context, "Async Task finished! with response: "+response, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, "Output: "+response, Toast.LENGTH_LONG);
                             toast.show();
     }
 }
