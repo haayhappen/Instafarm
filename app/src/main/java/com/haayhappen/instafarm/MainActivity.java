@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -35,7 +36,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener{
 
     //Variables definitions
     private String username;
@@ -121,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
         });
         ///////////////////////////////////////////////////////////////////////
     }
+//    @Override
+//    public void onFragmentInteraction(Uri uri){
+//        //you can leave it empty
+//    }
 
     @Override
     public void onBackPressed() {
@@ -132,6 +137,16 @@ public class MainActivity extends AppCompatActivity {
             // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
+    }
+
+    @Override
+    public void getLoginData(String username, String passwort) {
+
+        this.username =username;
+        this.passwort =passwort;
+        Log.d("MAIN", "username: "+username+" password: "+ passwort);
+
+        signin();
     }
 
 
@@ -235,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void signin(View view) {
+    public void signin() {
 
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
@@ -253,7 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 public void processFinish(String output) {
                     //Here you will receive the result fired from async class
                     //of onPostExecute(result) method.
-                    showOutput(output);
+                    if(output.contains("Login success")){
+                        showOutput("Login success");
+                    }else{
+                        showOutput("Wrong password or username");
+                    }
+
                 }
             }).execute(username, passwort);
         } catch (Exception e) {
@@ -263,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showOutput(String response) {
         Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context, "Output: " + response, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(context, "" + response, Toast.LENGTH_LONG);
         toast.show();
     }
 }
