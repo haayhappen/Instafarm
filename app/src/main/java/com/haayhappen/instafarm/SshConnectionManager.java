@@ -63,6 +63,7 @@ public class SshConnectionManager extends AsyncTask<String, Void, String> {
         super.onPreExecute();
 
         dialog = builder.build();
+        dialog.setCancelable(false);
         dialog.show();
     }
 
