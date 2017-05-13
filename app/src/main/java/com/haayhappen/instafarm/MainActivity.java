@@ -23,10 +23,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarTab;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
+
+import junit.framework.Test;
 
 import java.util.logging.Logger;
 
@@ -36,13 +40,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener{
+public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, ProfileFragment.InteractionListener{
 
     //Variables definitions
     private String username;
     private String passwort;
     private final String TAG = "MainActivity";
-    public static final String BASE_URL = "http://instafarm.stackr.de/";
+    //public static final String BASE_URL = "http://instafarm.stackr.de/";
     String output;
     private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
     //    private static final int NUM_PAGES = 3;
@@ -150,6 +154,17 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         signin();
     }
 
+    @Override
+    public void sayHello() {
+
+//        this.username =username;
+//        this.passwort =passwort;
+//        Log.d("MAIN", "username: "+username+" password: "+ passwort);
+
+        retroHello(this.username);
+    }
+
+
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
@@ -188,9 +203,14 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     }
 
     private ApiInterface getInterfaceService() {
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://62.75.253.50/API/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         final ApiInterface mInterfaceService = retrofit.create(ApiInterface.class);
         return mInterfaceService;
@@ -250,6 +270,36 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             }
         });
     }
+
+    private void retroHello(final String username) {
+
+        ApiInterface mApiService = this.getInterfaceService();
+        Call<test> mService = mApiService.hello("Sven Spieler");
+        mService.enqueue(new Callback<test>() {
+            @Override
+            public void onResponse(Call<test> call, Response<test> response) {
+                 test mTestObject = response.body();
+                String returnedResponse = mTestObject.testvar;
+
+                Toast.makeText(MainActivity.this, "Returned " + returnedResponse, Toast.LENGTH_LONG).show();
+//                //showProgress(false);
+//                if (returnedResponse.trim().equals("1")) {
+//                    //user can succesfully login
+//                }
+//                if (returnedResponse.trim().equals("0")) {
+//                    //user cant login
+//                    //log in with a valid instagram account
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<test> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(MainActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
     public void signin() {
 
