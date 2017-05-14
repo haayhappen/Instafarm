@@ -1,14 +1,9 @@
 package com.haayhappen.instafarm;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -17,20 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.BottomBarTab;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import junit.framework.Test;
 
 import java.util.logging.Logger;
 
@@ -40,11 +30,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, ProfileFragment.InteractionListener{
+public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, ProfileFragment.InteractionListener, BotFragment.InteractionListener {
 
     //Variables definitions
     private String username;
-    private String passwort;
+    private String password;
     private final String TAG = "MainActivity";
     //public static final String BASE_URL = "http://instafarm.stackr.de/";
     String output;
@@ -54,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     private PagerAdapter mPagerAdapter;
     FragmentPagerAdapter adapterViewPager;
     private Context mContext;
+    MaterialDialog.Builder builder;
+    MaterialDialog dialog;
+    public String pid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +57,12 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        ((Instafarm) this.getApplication()).setLoggedIn(false);
+
         vpPager = (ViewPager) findViewById(R.id.pager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
-        Log.d(TAG,"current page: "+ vpPager.getCurrentItem());
+        Log.d(TAG, "current page: " + vpPager.getCurrentItem());
 
         vpPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -144,26 +139,46 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         }
     }
 
+    //gets login data from settings tab
     @Override
-    public void getLoginData(String username, String passwort) {
+    public void getLoginData(String username, String password) {
 
-        this.username =username;
-        this.passwort =passwort;
-        Log.d("MAIN", "username: "+username+" password: "+ passwort);
+        this.username = username;
+        this.password = password;
+//        Log.d("MAIN", "username: "+username+" password: "+ password);
 
-        signin();
+        //signin();
+        //Login with retrofit
+        registrationProcessWithRetrofit(username, password);
     }
 
+    //says hello from profile tab
     @Override
     public void sayHello() {
 
 //        this.username =username;
-//        this.passwort =passwort;
-//        Log.d("MAIN", "username: "+username+" password: "+ passwort);
+//        this.password =password;
+//        Log.d("MAIN", "username: "+username+" password: "+ password);
 
         retroHello(this.username);
     }
 
+    //ovverides runbot method from botfragment (this is executed when runbot button is clicked)
+    @Override
+    public void runbot() {
+        if (((Instafarm) this.getApplication()).isLoggedIn()){
+
+            runBotWithRetro(this.username, this.password);
+    }else {Toast.makeText(MainActivity.this,"Log in first!",Toast.LENGTH_LONG).show();}
+}
+
+    @Override
+    public void stopbot() {
+        if (((Instafarm) this.getApplication()).isLoggedIn()){
+
+            stopBotWithRetro(this.username, this.pid);
+        }else {Toast.makeText(MainActivity.this,"Log in first!",Toast.LENGTH_LONG).show();}
+    }
 
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
@@ -216,50 +231,77 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         return mInterfaceService;
     }
 
-    private void loginProcessWithRetrofit(final String username, String password) {
-        ApiInterface mApiService = this.getInterfaceService();
-        Call<Login> mService = mApiService.authenticate(username, password);
-        mService.enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-                Login mLoginObject = response.body();
-                String returnedResponse = mLoginObject.isLogin;
-                Toast.makeText(MainActivity.this, "Returned " + returnedResponse, Toast.LENGTH_LONG).show();
-                //showProgress(false);
-                if (returnedResponse.trim().equals("1")) {
-                    //user can succesfully login
-                }
-                if (returnedResponse.trim().equals("0")) {
-                    //user cant login
-                    //log in with a valid instagram account
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(MainActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
+//    private void loginProcessWithRetrofit(final String username, String password) {
+//        ApiInterface mApiService = this.getInterfaceService();
+//        Call<Login> mService = mApiService.authenticate(username, password);
+//        mService.enqueue(new Callback<Login>() {
+//            @Override
+//            public void onResponse(Call<Login> call, Response<Login> response) {
+//                Login mLoginObject = response.body();
+//                String returnedResponse = mLoginObject.isLogin;
+//                Toast.makeText(MainActivity.this, "Returned " + returnedResponse, Toast.LENGTH_LONG).show();
+//                //showProgress(false);
+//                if (returnedResponse.trim().equals("1")) {
+//                    //user can succesfully login
+//                }
+//                if (returnedResponse.trim().equals("0")) {
+//                    //user cant login
+//                    //log in with a valid instagram account
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Login> call, Throwable t) {
+//                call.cancel();
+//                Toast.makeText(MainActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 
     private void registrationProcessWithRetrofit(final String username, String password) {
+
+        builder = new MaterialDialog.Builder(mContext)
+                .title("Signing in")
+                .content("Please wait")
+                .progress(true, 0);
+        dialog = builder.build();
+        dialog.setCancelable(false);
+        dialog.show();
+
         ApiInterface mApiService = this.getInterfaceService();
         Call<Login> mService = mApiService.registration(username, password);
         mService.enqueue(new Callback<Login>() {
+
+
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
                 Login mLoginObject = response.body();
                 String returnedResponse = mLoginObject.isLogin;
+                System.out.println(mLoginObject.isLogin);
+                System.out.println(returnedResponse);
                 //showProgress(false);
                 if (returnedResponse.trim().equals("1")) {
                     // redirect to Main Activity page
                     //user can login
+                    //TODO SAVE CREDENTIALS with shared preferences
                     Toast.makeText(MainActivity.this, "Login succesful", Toast.LENGTH_LONG).show();
+                    ((Instafarm) getApplication()).setLoggedIn(true);
+                    dialog.dismiss();
+                }
+                if (returnedResponse.trim().equals("2")) {
+                    // redirect to Main Activity page
+                    //user can login
+                    //TODO SAVE CREDENTIALS with shared preferences
+                    Toast.makeText(MainActivity.this, "Registration succesful", Toast.LENGTH_LONG).show();
+                    ((Instafarm) getApplication()).setLoggedIn(true);
+                    dialog.dismiss();
                 }
                 if (returnedResponse.trim().equals("0")) {
                     // use the registration button to register
                     //user cant login
+                    Toast.makeText(MainActivity.this, "Username or password incorrect!", Toast.LENGTH_LONG).show();
+                    ((Instafarm) getApplication()).setLoggedIn(false);
+                    dialog.dismiss();
                 }
             }
 
@@ -267,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             public void onFailure(Call<Login> call, Throwable t) {
                 call.cancel();
                 Toast.makeText(MainActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
             }
         });
     }
@@ -278,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         mService.enqueue(new Callback<test>() {
             @Override
             public void onResponse(Call<test> call, Response<test> response) {
-                 test mTestObject = response.body();
+                test mTestObject = response.body();
                 String returnedResponse = mTestObject.testvar;
 
                 Toast.makeText(MainActivity.this, "Returned " + returnedResponse, Toast.LENGTH_LONG).show();
@@ -300,6 +343,76 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
     }
 
+    private void runBotWithRetro(String username, String password /*,Array settings*/) {
+//
+//        username = "svenspieler";
+//        password = "5Keosniluro";
+        ApiInterface mApiService = this.getInterfaceService();
+        Call<bot> mService = mApiService.runbot(username, password);
+        mService.enqueue(new Callback<bot>() {
+            @Override
+            public void onResponse(Call<bot> call, Response<bot> response) {
+                bot mBotObject = response.body();
+                String returnedResponse = mBotObject.running;
+                String returnedIPD = mBotObject.PID;
+                pid = returnedIPD;
+
+                Toast.makeText(MainActivity.this, "Returned " + returnedResponse + "with PID:" +returnedIPD, Toast.LENGTH_LONG).show();
+//                //showProgress(false);
+                if (returnedResponse.trim().equals("1")) {
+                    //user can succesfully login
+                    Toast.makeText(MainActivity.this, "Bot is running with PID:"+returnedIPD, Toast.LENGTH_LONG).show();
+
+                }
+                if (returnedResponse.trim().equals("0")) {
+                    //user cant login
+                    //log in with a valid instagram account
+                    Toast.makeText(MainActivity.this, "Couldn't start Bot", Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<bot> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(MainActivity.this, "Please check Internet conditions -> couldn't start bot", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void stopBotWithRetro(String username,final String PID){
+
+        ApiInterface mApiService = this.getInterfaceService();
+        Call<bot> mService = mApiService.stopbot(username, PID);
+        mService.enqueue(new Callback<bot>() {
+            @Override
+            public void onResponse(Call<bot> call, Response<bot> response) {
+                bot mBotObject = response.body();
+                String returnedResponse = mBotObject.running;
+
+                //Toast.makeText(MainActivity.this, "Returned " + returnedResponse + "with PID:" +returnedIPD, Toast.LENGTH_LONG).show();
+//                //showProgress(false);
+                if (returnedResponse.trim().equals("0")) {
+                    //user can succesfully login
+                    Toast.makeText(mContext, "Bot with PID:"+PID+" stopped.", Toast.LENGTH_LONG).show();
+
+                }
+                if (returnedResponse.trim().equals("1")) {
+                    //user cant login
+                    //log in with a valid instagram account
+                    Toast.makeText(mContext, "Couldn't stop Bot with PID: "+PID, Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<bot> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(MainActivity.this, "Please check Internet connection!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
     public void signin() {
 
@@ -311,22 +424,22 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             EditText passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
             this.username = usernameEditText.getText().toString();
-            this.passwort = passwordEditText.getText().toString();
+            this.password = passwordEditText.getText().toString();
 
-            SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(mContext,new SshConnectionManager.AsyncResponse() {
+            SshConnectionManager asyncTask = (SshConnectionManager) new SshConnectionManager(mContext, new SshConnectionManager.AsyncResponse() {
 
                 @Override
                 public void processFinish(String output) {
                     //Here you will receive the result fired from async class
                     //of onPostExecute(result) method.
-                    if(output.contains("Login success")){
+                    if (output.contains("Login success")) {
                         showOutput("Login success");
-                    }else{
+                    } else {
                         showOutput("Wrong password or username");
                     }
 
                 }
-            }).execute(username, passwort);
+            }).execute(username, password);
         } catch (Exception e) {
             e.getMessage();
         }
