@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 /**
@@ -32,10 +33,11 @@ public class BotFragment extends Fragment {
     private String mParam2;
 
     InteractionListener activityCommander;
-    public interface InteractionListener{
-        public void runbot();
 
-        public void stopbot();
+    public interface InteractionListener {
+        void runbot();
+
+        void stopbot();
     }
 
     public BotFragment() {
@@ -47,7 +49,7 @@ public class BotFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-    // * @param param2 Parameter 2.
+     *               // * @param param2 Parameter 2.
      * @return A new instance of fragment BotFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -98,15 +100,19 @@ public class BotFragment extends Fragment {
     }
 
     private void stopBotButtonClicked(View v) {
-        this.stopBotButton.setEnabled(false);
-        this.startButton.setEnabled(true);
+        Instafarm ins = (Instafarm)new Instafarm();
+        boolean loggedin = ins.isLoggedIn();
+
+//        this.stopBotButton.setEnabled(false);
+//        this.startButton.setEnabled(true);
         activityCommander.stopbot();
     }
 
 
     private void runBotButtonClicked(View v) {
-        this.stopBotButton.setEnabled(true);
-        this.startButton.setEnabled(false);
+
+//        this.stopBotButton.setEnabled(true);
+//        this.startButton.setEnabled(false);
         activityCommander.runbot();
     }
 
@@ -138,9 +144,9 @@ public class BotFragment extends Fragment {
 //                    + " must implement OnFragmentInteractionListener");
 //        }
 
-        try{
-            activityCommander =(InteractionListener) context;
-        }catch (ClassCastException e){
+        try {
+            activityCommander = (InteractionListener) context;
+        } catch (ClassCastException e) {
             throw new ClassCastException(context.toString());
         }
     }

@@ -166,18 +166,21 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     //ovverides runbot method from botfragment (this is executed when runbot button is clicked)
     @Override
     public void runbot() {
-        if (((Instafarm) this.getApplication()).isLoggedIn()){
-
+        if (((Instafarm) this.getApplication()).isLoggedIn()) {
             runBotWithRetro(this.username, this.password);
-    }else {Toast.makeText(MainActivity.this,"Log in first!",Toast.LENGTH_LONG).show();}
-}
+        } else {
+            Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void stopbot() {
-        if (((Instafarm) this.getApplication()).isLoggedIn()){
+        if (((Instafarm) this.getApplication()).isLoggedIn()) {
 
             stopBotWithRetro(this.username, this.pid);
-        }else {Toast.makeText(MainActivity.this,"Log in first!",Toast.LENGTH_LONG).show();}
+        } else {
+            Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -357,11 +360,11 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                 String returnedIPD = mBotObject.PID;
                 pid = returnedIPD;
 
-                Toast.makeText(MainActivity.this, "Returned " + returnedResponse + "with PID:" +returnedIPD, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Returned " + returnedResponse + "with PID:" + returnedIPD, Toast.LENGTH_LONG).show();
 //                //showProgress(false);
                 if (returnedResponse.trim().equals("1")) {
                     //user can succesfully login
-                    Toast.makeText(MainActivity.this, "Bot is running with PID:"+returnedIPD, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Bot is running with PID:" + returnedIPD, Toast.LENGTH_LONG).show();
 
                 }
                 if (returnedResponse.trim().equals("0")) {
@@ -380,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
     }
 
-    private void stopBotWithRetro(String username,final String PID){
+    private void stopBotWithRetro(String username, final String PID) {
 
         ApiInterface mApiService = this.getInterfaceService();
         Call<bot> mService = mApiService.stopbot(username, PID);
@@ -394,13 +397,13 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 //                //showProgress(false);
                 if (returnedResponse.trim().equals("0")) {
                     //user can succesfully login
-                    Toast.makeText(mContext, "Bot with PID:"+PID+" stopped.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Bot with PID:" + PID + " stopped.", Toast.LENGTH_LONG).show();
 
                 }
                 if (returnedResponse.trim().equals("1")) {
                     //user cant login
                     //log in with a valid instagram account
-                    Toast.makeText(mContext, "Couldn't stop Bot with PID: "+PID, Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Couldn't stop Bot with PID: " + PID, Toast.LENGTH_LONG).show();
 
                 }
             }
