@@ -3,6 +3,8 @@
     package="com.haayhappen.instafarm">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    />
 
     <application
         android:name=".Instafarm"

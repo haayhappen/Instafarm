@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     //public static final String BASE_URL = "http://instafarm.stackr.de/";
     String output;
     private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
-    //    private static final int NUM_PAGES = 3;
+    //private static final int NUM_PAGES = 3;
     private ViewPager vpPager;
     private PagerAdapter mPagerAdapter;
     FragmentPagerAdapter adapterViewPager;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 //        this.password =password;
 //        Log.d("MAIN", "username: "+username+" password: "+ password);
 
-        retroHello(this.username);
+       // retroHello(this.username);
     }
 
     //ovverides runbot method from botfragment (this is executed when runbot button is clicked)
@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
     }
 
-    private void retroHello(final String username) {
+    /*private void retroHello(final String username) {
 
         ApiInterface mApiService = this.getInterfaceService();
         Call<test> mService = mApiService.hello("Sven Spieler");
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             }
         });
     }
-
+*/
     private void runBotWithRetro(String username, String password /*,Array settings*/) {
 //
 //        username = "svenspieler";

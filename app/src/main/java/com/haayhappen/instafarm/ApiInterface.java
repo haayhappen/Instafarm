@@ -21,6 +21,6 @@ public interface ApiInterface {
     @POST("stop")
     Call<bot> stopbot(@Query("username") String username, @Query("PID") String PID);
 
-    @GET("hello/{username}")
-    Call<test> hello(@Path("username") String username);
+    //@GET("hello/{username}")
+    //Call<test> hello(@Path("username") String username);
 }

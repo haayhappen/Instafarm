@@ -7,6 +7,15 @@ package com.haayhappen.instafarm;
 class User {
     String username;
     private String passwort;
+    private int likePerDay;
+    private int followPerDay;
+    private int unfollowPerDay;
+    private int commentPerDay;
+    private int mediaMinLike;
+    private int mediaMaxLike;
+    private String[] tagList;
+    private String[] tagBlacklist;
+
 
     public String getUsername() {
         return username;

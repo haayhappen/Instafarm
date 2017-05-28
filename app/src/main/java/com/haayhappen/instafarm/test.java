@@ -1,8 +1,8 @@
-package com.haayhappen.instafarm;
+/*package com.haayhappen.instafarm;
 
 /**
  * Created by Fynn on 12.05.2017.
- */
+
 
 public class test {
     public String response;
@@ -23,4 +23,4 @@ public class test {
     public void setResponse(String response) {
         this.response = response;
     }
-}
+} */
