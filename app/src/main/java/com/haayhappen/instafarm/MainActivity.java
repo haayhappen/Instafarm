@@ -1,7 +1,10 @@
 package com.haayhappen.instafarm;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.vending.billing.IInAppBillingService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.roughike.bottombar.BottomBar;
@@ -32,21 +36,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, ProfileFragment.InteractionListener, BotFragment.InteractionListener {
 
-    //Variables definitions
+    //Debug TAG
+    private final String TAG = "MainActivity";
+    private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
+    ///////////
+
+    //Gerneral Variables Declaration
     private String username;
     private String password;
-    private final String TAG = "MainActivity";
-    //public static final String BASE_URL = "http://instafarm.stackr.de/";
-    String output;
-    private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
-    //private static final int NUM_PAGES = 3;
+    public String pid;
+    private Context mContext;
+    ////////////////////////////////
+
+    //ViewPager Variables Declaration
     private ViewPager vpPager;
     private PagerAdapter mPagerAdapter;
     FragmentPagerAdapter adapterViewPager;
-    private Context mContext;
+    /////////////////////////////////
+
+    //Material Dialog Variables Declaration
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
-    public String pid;
+    ///////////////////////////////////////
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,10 +135,8 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
         ///////////////////////////////////////////////////////////////////////
     }
-//    @Override
-//    public void onFragmentInteraction(Uri uri){
-//        //you can leave it empty
-//    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -160,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 //        this.password =password;
 //        Log.d("MAIN", "username: "+username+" password: "+ password);
 
-       // retroHello(this.username);
+        // retroHello(this.username);
     }
 
     //ovverides runbot method from botfragment (this is executed when runbot button is clicked)
