@@ -15,6 +15,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
 }
@@ -24,7 +25,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.firebaseui:firebase-ui-auth:1.2.0'
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'
@@ -36,7 +37,10 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
     compile 'com.afollestad.material-dialogs:core:0.9.4.4'
+    compile 'com.google.firebase:firebase-messaging:10.2.6'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.firebase:firebase-auth:10.2.6'
+    compile 'com.google.android.gms:play-services-auth:10.2.6'
 }
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
@@ -48,5 +52,7 @@ configurations.all {
         }
     }
 }
+
+//apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.gms.google-services'

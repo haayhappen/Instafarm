@@ -1,10 +1,10 @@
 package com.haayhappen.instafarm;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,22 +14,20 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
-import com.firebase.ui.auth.IdpResponse;
-import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 import retrofit2.Call;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     private Context mContext;
     private Snackbar snackbar;
     // Choose an arbitrary request code value
-    private static final int RC_SIGN_IN = 1337;
+    //private static final int RC_SIGN_IN = 1337;
     ////////////////////////////////
 
     //ViewPager Variables Declaration
@@ -66,12 +64,35 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     MaterialDialog dialog;
     ///////////////////////////////////////
 
+    //Firebase
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+
+                    Toast.makeText(MainActivity.this, "Logged in: "+user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    //Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    //startActivity(intent);
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
+        /* DOesnt work
         //Check if user is signed in
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
@@ -90,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                     .build(),
                     RC_SIGN_IN);
         }
-
+*/
         mContext = this;
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -160,15 +181,55 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             }
         });
         ///////////////////////////////////////////////////////////////////////
+
+
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_main_setting:
+
+                FirebaseAuth.getInstance().signOut();
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             // Successfully signed in
+            snackbar = this.snackbar.setDuration(Snackbar.LENGTH_SHORT);
             if (resultCode == ResultCodes.OK) {
                 //startActivity(SignedInActivity.createIntent(this, response));
                 finish();
@@ -177,32 +238,28 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    snackbar.setText(R.string.sign_in_cancelled);
-                    snackbar.setDuration(Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    this.snackbar.setText(R.string.sign_in_cancelled);
+                    this.snackbar.show();
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    snackbar.setText(R.string.no_internet_connection);
-                    snackbar.setDuration(Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    this.snackbar.setText(R.string.no_internet_connection);
+                    this.snackbar.show();
                     return;
                 }
 
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    snackbar.setText(R.string.unknown_error);
-                    snackbar.setDuration(Snackbar.LENGTH_SHORT);
-                    snackbar.show();
+                    this.snackbar.setText(R.string.unknown_error);
+                    this.snackbar.show();
                     return;
                 }
             }
 
-            snackbar.setText(R.string.unknown_sign_in_response);
-            snackbar.setDuration(Snackbar.LENGTH_SHORT);
-            snackbar.show();
+            this.snackbar.setText(R.string.unknown_sign_in_response);
+            this.snackbar.show();
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
