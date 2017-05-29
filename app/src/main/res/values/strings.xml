@@ -23,6 +23,10 @@
     <string name="no_text"> </string>
     <string name="registration_message">You are not registered yet. Use the registration button to complete your registration.</string>
     <string name="registration_failed">Your email or password is already in use</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="unknown_sign_in_response">Unknowns sign in response</string>
     <string-array name="autocomplete">
         <item>johnpaul@yahoo.com</item>
         <item>marykate@yahoo.com</item>

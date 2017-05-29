@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "154578163613",
+    "firebase_url": "https://instafarm-6c6aa.firebaseio.com",
+    "project_id": "instafarm-6c6aa",
+    "storage_bucket": "instafarm-6c6aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154578163613:android:9b955802f315475d",
+        "android_client_info": {
+          "package_name": "com.haayhappen.instafarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154578163613-766409pe3ei2ru9u2on33f42b39g97eg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.haayhappen.instafarm",
+            "certificate_hash": "5da562af6924489304db747fef4fcc222d06d621"
+          }
+        },
+        {
+          "client_id": "154578163613-9oo4ui56r2rsvm978s50i0ls6s5t3mt6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhCrrsCPJWO_Me7j7u2emkIxpzwkInIjo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154578163613-9oo4ui56r2rsvm978s50i0ls6s5t3mt6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
