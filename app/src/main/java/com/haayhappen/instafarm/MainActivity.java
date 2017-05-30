@@ -1,6 +1,7 @@
 package com.haayhappen.instafarm;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -20,8 +21,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.roughike.bottombar.BottomBar;
@@ -67,51 +72,13 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     //Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-
-                    Toast.makeText(MainActivity.this, "Logged in: "+user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    //Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    //startActivity(intent);
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
-        /* DOesnt work
-        //Check if user is signed in
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            // already signed in
-        } else {
-            // not signed in
-
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                            .setTosUrl("https://superapp.example.com/terms-of-service.html")
-                    .setTheme(R.style.AppTheme)
-                    .build(),
-                    RC_SIGN_IN);
-        }
-*/
         mContext = this;
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -182,21 +149,52 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
         ///////////////////////////////////////////////////////////////////////
 
+// [START config_signin]
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // [START initialize_auth]
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
     }
 
+    //Creates the Toolbars MENU
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
+    //Listener for Toolbar Menu Icons
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_main_setting:
 
-                FirebaseAuth.getInstance().signOut();
+                // Firebase sign out
+                mAuth.signOut();
+                //Google sign out
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                //TODO Check if status really is ok
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        });
+
+
 
                 return true;
 
@@ -204,63 +202,35 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+
+        try {
+            mGoogleApiClient.connect();
+        }catch (IllegalStateException e)
+        {
+            Log.e("IllegalStateException", e.toString());
+        }
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+
+        try {
+            mGoogleApiClient.disconnect();
+        }catch (IllegalStateException e)
+        {
+            Log.e("IllegalStateException", e.toString());
         }
+        finish();
     }
 
-    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            // Successfully signed in
-            snackbar = this.snackbar.setDuration(Snackbar.LENGTH_SHORT);
-            if (resultCode == ResultCodes.OK) {
-                //startActivity(SignedInActivity.createIntent(this, response));
-                finish();
-                return;
-            } else {
-                // Sign in failed
-                if (response == null) {
-                    // User pressed back button
-                    this.snackbar.setText(R.string.sign_in_cancelled);
-                    this.snackbar.show();
-                    return;
-                }
-
-                if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    this.snackbar.setText(R.string.no_internet_connection);
-                    this.snackbar.show();
-                    return;
-                }
-
-                if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    this.snackbar.setText(R.string.unknown_error);
-                    this.snackbar.show();
-                    return;
-                }
-            }
-
-            this.snackbar.setText(R.string.unknown_sign_in_response);
-            this.snackbar.show();
-        }
-    }*/
-
+    //Handles the On back button through the fragments
     @Override
     public void onBackPressed() {
         if (vpPager.getCurrentItem() == 0) {
@@ -273,15 +243,13 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         }
     }
 
-    //gets login data from settings tab
+    //Gets login data from settings tab
     @Override
     public void getLoginData(String username, String password) {
 
         this.username = username;
         this.password = password;
-//        Log.d("MAIN", "username: "+username+" password: "+ password);
 
-        //signin();
         //Login with retrofit
         registrationProcessWithRetrofit(username, password);
     }
@@ -297,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         // retroHello(this.username);
     }
 
-    //ovverides runbot method from botfragment (this is executed when runbot button is clicked)
+    //ovverides runbot method from botfragment,executed when runbot button is clicked)
     @Override
     public void runbot() {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
@@ -307,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         }
     }
 
+    //Overrides method from botfragment ,executed when stopbot is clicked
     @Override
     public void stopbot() {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
@@ -317,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         }
     }
 
-
+    //Pager Adapter handles swiping between fragments
     public static class MyPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
 
@@ -354,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
     }
 
+    //Builder for the Retrofit Interface
     private ApiInterface getInterfaceService() {
 
         Gson gson = new GsonBuilder()
@@ -368,33 +338,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         return mInterfaceService;
     }
 
-//    private void loginProcessWithRetrofit(final String username, String password) {
-//        ApiInterface mApiService = this.getInterfaceService();
-//        Call<Login> mService = mApiService.authenticate(username, password);
-//        mService.enqueue(new Callback<Login>() {
-//            @Override
-//            public void onResponse(Call<Login> call, Response<Login> response) {
-//                Login mLoginObject = response.body();
-//                String returnedResponse = mLoginObject.isLogin;
-//                Toast.makeText(MainActivity.this, "Returned " + returnedResponse, Toast.LENGTH_LONG).show();
-//                //showProgress(false);
-//                if (returnedResponse.trim().equals("1")) {
-//                    //user can succesfully login
-//                }
-//                if (returnedResponse.trim().equals("0")) {
-//                    //user cant login
-//                    //log in with a valid instagram account
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Login> call, Throwable t) {
-//                call.cancel();
-//                Toast.makeText(MainActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-
+    //register is actually just signing in
     private void registrationProcessWithRetrofit(final String username, String password) {
 
         builder = new MaterialDialog.Builder(mContext)
@@ -451,35 +395,6 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
     }
 
-    /*private void retroHello(final String username) {
-
-        ApiInterface mApiService = this.getInterfaceService();
-        Call<test> mService = mApiService.hello("Sven Spieler");
-        mService.enqueue(new Callback<test>() {
-            @Override
-            public void onResponse(Call<test> call, Response<test> response) {
-                test mTestObject = response.body();
-                String returnedResponse = mTestObject.testvar;
-
-                Toast.makeText(MainActivity.this, "Returned " + returnedResponse, Toast.LENGTH_LONG).show();
-//                //showProgress(false);
-//                if (returnedResponse.trim().equals("1")) {
-//                    //user can succesfully login
-//                }
-//                if (returnedResponse.trim().equals("0")) {
-//                    //user cant login
-//                    //log in with a valid instagram account
-//                }
-            }
-
-            @Override
-            public void onFailure(Call<test> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(MainActivity.this, "Please check your network connection and internet permission", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-*/
     private void runBotWithRetro(String username, String password /*,Array settings*/) {
 //
 //        username = "svenspieler";

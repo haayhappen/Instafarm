@@ -39,4 +39,28 @@
     <string name="auth_failed">Authentication failed</string>
     <string name="Logged_in_as">Logged in as:</string>
     <string name="or_sign_in_with_google">or sign in with google</string>
+    <string name="Instafarm">Instafarm</string>
+    <string name="Payment">Payment</string>
+    <string name="Login">Login</string>
+    <string name="google_title_text">Google sign in</string>
+    <string name="signed_out">Signed out</string>
+    <string name="sign_out">Sign out</string>
+    <string name="disconnect">Disconnect</string>
+
+    <string name="hint_user_id">User ID</string>
+    <string name="get_custom_token">Get Token</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="custom_token">Custom Token</string>
+    <string name="token_null">Token: null</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="firebase_user_management">Firebase User Management</string>
+
+    <string name="google_status_fmt">Google User: %s</string>
+    <string name="exit_app">Press again to exit</string>
 </resources>
