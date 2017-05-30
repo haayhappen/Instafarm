@@ -15,6 +15,18 @@ public class bot {
     private int mediaMinLike;
     private int mediaMaxLike;
     private String[] tagList;
+
+    public bot(int likePerDay, int followPerDay, int unfollowPerDay, int commentPerDay, int mediaMinLike, int mediaMaxLike, String[] tagList, String[] tagBlacklist) {
+        this.likePerDay = likePerDay;
+        this.followPerDay = followPerDay;
+        this.unfollowPerDay = unfollowPerDay;
+        this.commentPerDay = commentPerDay;
+        this.mediaMinLike = mediaMinLike;
+        this.mediaMaxLike = mediaMaxLike;
+        this.tagList = tagList;
+        this.tagBlacklist = tagBlacklist;
+    }
+
     private String[] tagBlacklist;
 
     public String getPID() {

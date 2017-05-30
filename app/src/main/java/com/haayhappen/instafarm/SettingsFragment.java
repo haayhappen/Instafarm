@@ -47,7 +47,7 @@ public class SettingsFragment extends Fragment {
 //    private OnFragmentInteractionListener mListener;
     LoginListener activityCommander;
     public interface LoginListener{
-        public void getLoginData(String username,String passwort);
+        void getLoginData(String username,String passwort);
     }
 
     @Override

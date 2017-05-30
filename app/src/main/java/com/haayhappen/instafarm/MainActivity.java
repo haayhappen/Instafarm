@@ -267,18 +267,14 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
     //ovverides runbot method from botfragment,executed when runbot button is clicked)
     @Override
-    public void runbot() {
+    public void runbot(bot bot) {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
-            runBotWithRetro(this.username, this.password,getBot());
+            runBotWithRetro(this.username, this.password,bot);
         } else {
             Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
         }
     }
-    @Override
-    public bot getBot(bot bot) {
 
-        return bot;
-    }
 
     //Overrides method from botfragment ,executed when stopbot is clicked
     @Override

@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import mabbas007.tagsedittext.TagsEditText;
+
+import static android.R.attr.tag;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +42,8 @@ public class BotFragment extends Fragment {
     EditText unfollowcount;
     EditText commentcount;
 
+    TagsEditText tagsEditText;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -45,9 +51,9 @@ public class BotFragment extends Fragment {
     InteractionListener activityCommander;
 
     public interface InteractionListener {
-        void runbot();
+        void runbot(bot bot);
         void stopbot();
-        void getBot(bot bot);
+        //void getBot(bot bot);
     }
 
     public BotFragment() {
@@ -99,6 +105,7 @@ public class BotFragment extends Fragment {
         unfollowcount = (EditText) view.findViewById(R.id.unfollowcount);
         commentcount = (EditText) view.findViewById(R.id.commentcount);
 
+        tagsEditText =(TagsEditText) view.findViewById(R.id.tagsEditText);
 
         stopBotButton = (Button) view.findViewById(R.id.stopBotButton);
         stopBotButton.setEnabled(false);
@@ -140,7 +147,17 @@ public class BotFragment extends Fragment {
 //        this.stopBotButton.setEnabled(true);
 //        this.startButton.setEnabled(false);
 
-        activityCommander.runbot();
+        String[] taglist = tagsEditText.getText().toString().split("\\s+");
+        for (int i = 0; i < taglist.length; i++) {
+            // You may want to check for a non-word character before blindly
+            // performing a replacement
+            // It may also be necessary to adjust the character class
+            taglist[i] = taglist[i].replaceAll("[^\\w]", "");
+        }
+
+        String[] blacklist = {"porn", "sex"};
+bot botWithConfig = new bot(Integer.parseInt(likecount.getText().toString()),Integer.parseInt(followcount.getText().toString()),Integer.parseInt(unfollowcount.getText().toString()),Integer.parseInt(commentcount.getText().toString()),5,50,taglist,blacklist);
+        activityCommander.runbot(botWithConfig);
     }
 
     private void getBotDetails(View v) {
@@ -148,8 +165,8 @@ public class BotFragment extends Fragment {
 //        this.stopBotButton.setEnabled(true);
 //        this.startButton.setEnabled(false);
 //get all data TODO add variableslike contruktor
-        bot bot = new bot();
-        activityCommander.getBot(bot);
+        //bot bot = new bot();
+        //activityCommander.getBot(bot);
     }
     // TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
