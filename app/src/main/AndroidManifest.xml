@@ -25,7 +25,6 @@
         <activity
             android:name=".LoginActivity"
             android:excludeFromRecents="true"
-            android:label="@string/Login"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
