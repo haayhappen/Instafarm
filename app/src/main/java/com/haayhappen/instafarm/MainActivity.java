@@ -269,10 +269,15 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     @Override
     public void runbot() {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
-            runBotWithRetro(this.username, this.password);
+            runBotWithRetro(this.username, this.password,getBot());
         } else {
             Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
         }
+    }
+    @Override
+    public bot getBot(bot bot) {
+
+        return bot;
     }
 
     //Overrides method from botfragment ,executed when stopbot is clicked
@@ -395,12 +400,15 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
     }
 
-    private void runBotWithRetro(String username, String password /*,Array settings*/) {
+    private void runBotWithRetro(String username, String password, bot bot) {
 //
 //        username = "svenspieler";
 //        password = "5Keosniluro";
+
+        //Bot ist the config Object
+
         ApiInterface mApiService = this.getInterfaceService();
-        Call<bot> mService = mApiService.runbot(username, password);
+        Call<bot> mService = mApiService.runbot(username, password, bot);
         mService.enqueue(new Callback<bot>() {
             @Override
             public void onResponse(Call<bot> call, Response<bot> response) {

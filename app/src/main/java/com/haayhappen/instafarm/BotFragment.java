@@ -9,7 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.Switch;
 
 
 /**
@@ -27,6 +28,15 @@ public class BotFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     Button stopBotButton;
     Button startButton;
+    Switch likeswitch;
+    Switch followswitch;
+    Switch unfollowswitch;
+    Switch commentswich;
+
+    EditText likecount;
+    EditText followcount;
+    EditText unfollowcount;
+    EditText commentcount;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -36,8 +46,8 @@ public class BotFragment extends Fragment {
 
     public interface InteractionListener {
         void runbot();
-
         void stopbot();
+        void getBot(bot bot);
     }
 
     public BotFragment() {
@@ -69,13 +79,27 @@ public class BotFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_bot, container, false);
+
+        //Get views
+        likeswitch = (Switch) view.findViewById(R.id.likeswitch);
+        followswitch = (Switch) view.findViewById(R.id.followswitch);
+        unfollowswitch = (Switch) view.findViewById(R.id.unfollowswitch);
+        commentswich = (Switch) view.findViewById(R.id.commentswitch);
+
+        likecount = (EditText) view.findViewById(R.id.likecount);
+        followcount = (EditText) view.findViewById(R.id.followcount);
+        unfollowcount = (EditText) view.findViewById(R.id.unfollowcount);
+        commentcount = (EditText) view.findViewById(R.id.commentcount);
+
+
         stopBotButton = (Button) view.findViewById(R.id.stopBotButton);
         stopBotButton.setEnabled(false);
         startButton = (Button) view.findViewById(R.id.runBotButton);
@@ -95,6 +119,8 @@ public class BotFragment extends Fragment {
             }
         });
 
+
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -113,9 +139,18 @@ public class BotFragment extends Fragment {
 
 //        this.stopBotButton.setEnabled(true);
 //        this.startButton.setEnabled(false);
+
         activityCommander.runbot();
     }
 
+    private void getBotDetails(View v) {
+
+//        this.stopBotButton.setEnabled(true);
+//        this.startButton.setEnabled(false);
+//get all data TODO add variableslike contruktor
+        bot bot = new bot();
+        activityCommander.getBot(bot);
+    }
     // TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {

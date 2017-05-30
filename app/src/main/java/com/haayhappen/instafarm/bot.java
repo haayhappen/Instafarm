@@ -8,6 +8,14 @@ public class bot {
 
     public String running;
     public String PID;
+    private int likePerDay;
+    private int followPerDay;
+    private int unfollowPerDay;
+    private int commentPerDay;
+    private int mediaMinLike;
+    private int mediaMaxLike;
+    private String[] tagList;
+    private String[] tagBlacklist;
 
     public String getPID() {
         return PID;
@@ -25,5 +33,6 @@ public class bot {
         this.running = running;
     }
 
+    //TODO create constructor
 
 }
