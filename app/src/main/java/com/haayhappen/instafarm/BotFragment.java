@@ -15,6 +15,7 @@ import android.widget.Switch;
 import mabbas007.tagsedittext.TagsEditText;
 
 import static android.R.attr.tag;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
 /**
@@ -143,10 +144,7 @@ public class BotFragment extends Fragment {
 
 
     private void runBotButtonClicked(View v) {
-
-//        this.stopBotButton.setEnabled(true);
-//        this.startButton.setEnabled(false);
-
+//TODO validate switches -->if !checked set values to null
         String[] taglist = tagsEditText.getText().toString().split("\\s+");
         for (int i = 0; i < taglist.length; i++) {
             // You may want to check for a non-word character before blindly
@@ -160,20 +158,6 @@ bot botWithConfig = new bot(Integer.parseInt(likecount.getText().toString()),Int
         activityCommander.runbot(botWithConfig);
     }
 
-    private void getBotDetails(View v) {
-
-//        this.stopBotButton.setEnabled(true);
-//        this.startButton.setEnabled(false);
-//get all data TODO add variableslike contruktor
-        //bot bot = new bot();
-        //activityCommander.getBot(bot);
-    }
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
 
 //    @Override
 //    public void onAttach(Context context) {

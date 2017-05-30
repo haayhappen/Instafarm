@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "154578163613-nqc4b96f37iduu7q0ait9jrppeqqo0ih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.haayhappen.instafarm",
+            "certificate_hash": "da7e25d8a0bd83a896d5e10522e0b3fdc1082f9f"
+          }
+        },
+        {
           "client_id": "154578163613-79dib20mve8aigpcu15s4kgnu2aobsup.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

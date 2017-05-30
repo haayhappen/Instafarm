@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+//Open terminal and change directory to where the keytool is located(java distribution)
+//Get the SHA1 Fingerprint: keytool -exportcert -alias androiddebugkey -keystore "C:\Users\YOUR_USERNAME\.android\debug.keystore" -list -v
 public class LoginActivity extends BaseActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
