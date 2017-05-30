@@ -14,6 +14,7 @@ import android.widget.Switch;
 
 import mabbas007.tagsedittext.TagsEditText;
 
+import static android.R.attr.max;
 import static android.R.attr.tag;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -53,6 +54,7 @@ public class BotFragment extends Fragment {
 
     public interface InteractionListener {
         void runbot(bot bot);
+
         void stopbot();
         //void getBot(bot bot);
     }
@@ -106,7 +108,7 @@ public class BotFragment extends Fragment {
         unfollowcount = (EditText) view.findViewById(R.id.unfollowcount);
         commentcount = (EditText) view.findViewById(R.id.commentcount);
 
-        tagsEditText =(TagsEditText) view.findViewById(R.id.tagsEditText);
+        tagsEditText = (TagsEditText) view.findViewById(R.id.tagsEditText);
 
         stopBotButton = (Button) view.findViewById(R.id.stopBotButton);
         stopBotButton.setEnabled(false);
@@ -128,13 +130,12 @@ public class BotFragment extends Fragment {
         });
 
 
-
         // Inflate the layout for this fragment
         return view;
     }
 
     private void stopBotButtonClicked(View v) {
-        Instafarm ins = (Instafarm)new Instafarm();
+        Instafarm ins = (Instafarm) new Instafarm();
         boolean loggedin = ins.isLoggedIn();
 
 //        this.stopBotButton.setEnabled(false);
@@ -152,9 +153,16 @@ public class BotFragment extends Fragment {
             // It may also be necessary to adjust the character class
             taglist[i] = taglist[i].replaceAll("[^\\w]", "");
         }
+        int likes = Integer.parseInt(likecount.getText().toString());
+        int follows = Integer.parseInt(followcount.getText().toString());
+        int unfollows = Integer.parseInt(unfollowcount.getText().toString());
+        int comments = Integer.parseInt(commentcount.getText().toString());
 
+        int minlikes = 5;
+        int maxlikes = 50;
         String[] blacklist = {"porn", "sex"};
-bot botWithConfig = new bot(Integer.parseInt(likecount.getText().toString()),Integer.parseInt(followcount.getText().toString()),Integer.parseInt(unfollowcount.getText().toString()),Integer.parseInt(commentcount.getText().toString()),5,50,taglist,blacklist);
+
+        bot botWithConfig = new bot(likes, follows, unfollows, comments, minlikes, maxlikes, taglist, blacklist);
         activityCommander.runbot(botWithConfig);
     }
 
