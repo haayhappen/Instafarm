@@ -124,15 +124,15 @@ public class BotFragment extends Fragment {
         commentcount = (EditText) view.findViewById(R.id.commentcount);
 
 
-
         //tagsEditText = (TagsEditText) view.findViewById(R.id.tagsEditText);
         final ArrayList<String> tags = new ArrayList<>();
         //TagView
-        String[] values=new String[]{"photooftheday","l4l","f4f"};
-        for (int i=0;i <values.length;i++){
+        String[] values = new String[]{"photooftheday", "l4l", "f4f"};
+        for (int i = 0; i < values.length; i++) {
             tags.add(values[i]);
         }
 
+        //DOCS https://android-arsenal.com/details/1/2992#!description
         mTagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerLayout);
         //mTagContainerLayout.setTags(tags);
         // Set customize theme
@@ -159,7 +159,7 @@ public class BotFragment extends Fragment {
             }
         });
 
-        addtagbutton =(Button) view.findViewById(R.id.addtagbutton);
+        addtagbutton = (Button) view.findViewById(R.id.addtagbutton);
         addtagbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +194,10 @@ public class BotFragment extends Fragment {
     }
 
     private void addTagClicked(View v) {
+
         //Add Tag has been clicked
+
+        //DOCS https://github.com/afollestad/material-dialogs  (Input Dialogs)
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.addtag)
                 .content(R.string.input_content)
@@ -204,7 +207,7 @@ public class BotFragment extends Fragment {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         // add to hastag list
-                            mTagContainerLayout.addTag(input+"");
+                        mTagContainerLayout.addTag(input + "");
                     }
                 }).show();
 
@@ -232,15 +235,15 @@ public class BotFragment extends Fragment {
         comments = Integer.parseInt(commentcount.getText().toString());
 
 
-        int mode =0;
-        int maxLikeForOneTag=50;
+        int mode = 0;
+        int maxLikeForOneTag = 50;
         int minlikes = 5;
         int maxlikes = 50;
         String[] blacklist = {"porn", "sex"};
         List<String> list = mTagContainerLayout.getTags();
         String[] taglist = list.toArray(new String[list.size()]);
 
-        bot botWithConfig = new bot(likes, follows, unfollows, comments, minlikes, maxlikes, taglist, blacklist,maxLikeForOneTag,mode);
+        bot botWithConfig = new bot(likes, follows, unfollows, comments, minlikes, maxlikes, taglist, blacklist, maxLikeForOneTag, mode);
         activityCommander.runbot(botWithConfig);
     }
 

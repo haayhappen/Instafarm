@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--MATERIAL COLOR TOOL-->
+    <!--   https://material.io/color/#!/?view.left=0&view.right=0  -->
     <color name="colorPrimary">#03a9f4</color>
     <color name="colorPrimaryDark">#007ac1</color>
     <color name="colorAccent">#e91e63</color>
