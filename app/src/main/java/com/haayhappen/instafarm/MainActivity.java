@@ -521,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     }
 
 
-    public void signin() {
+    /*public void signin() {
 
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, "Signing in..", Toast.LENGTH_SHORT);
@@ -551,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             e.getMessage();
         }
     }
-
+*/
     public void showOutput(String response) {
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, "" + response, Toast.LENGTH_LONG);

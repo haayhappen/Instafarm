@@ -145,7 +145,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="45dp"
-        android:text="fynniputzii"
+        android:text="username"
         android:textAlignment="center"
         android:textSize="32sp"
         app:layout_constraintRight_toRightOf="parent"
