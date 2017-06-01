@@ -1,11 +1,9 @@
 package com.haayhappen.instafarm;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +21,6 @@ import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import mabbas007.tagsedittext.TagsEditText;
-
-import static android.R.attr.max;
-import static android.R.attr.mode;
-import static android.R.attr.tag;
-import static android.R.id.list;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
 /**
@@ -50,7 +41,7 @@ public class BotFragment extends Fragment {
     Switch likeswitch;
     Switch followswitch;
     Switch unfollowswitch;
-    Switch commentswich;
+    Switch commentswitch;
 
     EditText likecount;
     EditText followcount;
@@ -116,7 +107,7 @@ public class BotFragment extends Fragment {
         likeswitch = (Switch) view.findViewById(R.id.likeswitch);
         followswitch = (Switch) view.findViewById(R.id.followswitch);
         unfollowswitch = (Switch) view.findViewById(R.id.unfollowswitch);
-        commentswich = (Switch) view.findViewById(R.id.commentswitch);
+        commentswitch = (Switch) view.findViewById(R.id.commentswitch);
 
         likecount = (EditText) view.findViewById(R.id.likecount);
         followcount = (EditText) view.findViewById(R.id.followcount);
@@ -224,18 +215,28 @@ public class BotFragment extends Fragment {
 
     private void runBotButtonClicked(View v) {
 //TODO validate switches -->if !checked set values to null
-        int likes;
-        int follows;
-        int unfollows;
-        int comments;
-
-        likes = Integer.parseInt(likecount.getText().toString());
-        follows = Integer.parseInt(followcount.getText().toString());
-        unfollows = Integer.parseInt(unfollowcount.getText().toString());
-        comments = Integer.parseInt(commentcount.getText().toString());
+        int likes = 0;
+        int follows = 0;
+        int unfollows = 0;
+        int comments = 0;
 
 
-        int mode = 0;
+        //Evaluate Switchges Issue #1
+        if (likeswitch.isChecked()){
+            likes = Integer.parseInt(likecount.getText().toString());
+        }
+        if (followswitch.isChecked()){
+            follows = Integer.parseInt(followcount.getText().toString());
+        }
+        if (unfollowswitch.isChecked()){
+            unfollows = Integer.parseInt(unfollowcount.getText().toString());
+        }
+        if (commentswitch.isChecked()){
+            comments = Integer.parseInt(commentcount.getText().toString());
+        }
+
+
+            int mode = 0;
         int maxLikeForOneTag = 50;
         int minlikes = 5;
         int maxlikes = 50;
