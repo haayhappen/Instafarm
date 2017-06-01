@@ -15,6 +15,7 @@ import android.widget.Switch;
 import mabbas007.tagsedittext.TagsEditText;
 
 import static android.R.attr.max;
+import static android.R.attr.mode;
 import static android.R.attr.tag;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -146,23 +147,38 @@ public class BotFragment extends Fragment {
 
     private void runBotButtonClicked(View v) {
 //TODO validate switches -->if !checked set values to null
-        String[] taglist = tagsEditText.getText().toString().split("\\s+");
-        for (int i = 0; i < taglist.length; i++) {
-            // You may want to check for a non-word character before blindly
-            // performing a replacement
-            // It may also be necessary to adjust the character class
-            taglist[i] = taglist[i].replaceAll("[^\\w]", "");
+        int likes;
+        int follows;
+        int unfollows;
+        int comments;
+        /*
+        String[] taglist = null;
+        //check if there are any tags
+        if (tagsEditText != null) {
+            taglist = tagsEditText.getText().toString().split("\\s+");
+            for (int i = 0; i < taglist.length; i++) {
+                // You may want to check for a non-word character before blindly
+                // performing a replacement
+                // It may also be necessary to adjust the character class
+                taglist[i] = taglist[i].replaceAll("[^\\w]", "");
+            }
         }
-        int likes = Integer.parseInt(likecount.getText().toString());
-        int follows = Integer.parseInt(followcount.getText().toString());
-        int unfollows = Integer.parseInt(unfollowcount.getText().toString());
-        int comments = Integer.parseInt(commentcount.getText().toString());
+        */
+        likes = Integer.parseInt(likecount.getText().toString());
+        follows = Integer.parseInt(followcount.getText().toString());
+        unfollows = Integer.parseInt(unfollowcount.getText().toString());
+        comments = Integer.parseInt(commentcount.getText().toString());
 
+
+        int mode =0;
+        int maxLikeForOneTag=50;
         int minlikes = 5;
         int maxlikes = 50;
         String[] blacklist = {"porn", "sex"};
+        String[] taglist = {"cute", "photooftheday"};
 
-        bot botWithConfig = new bot(likes, follows, unfollows, comments, minlikes, maxlikes, taglist, blacklist);
+
+        bot botWithConfig = new bot(likes, follows, unfollows, comments, minlikes, maxlikes, taglist, blacklist,maxLikeForOneTag,mode);
         activityCommander.runbot(botWithConfig);
     }
 

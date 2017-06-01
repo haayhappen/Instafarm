@@ -15,8 +15,10 @@ public class bot {
     private int mediaMinLike;
     private int mediaMaxLike;
     private String[] tagList;
+    private int maxLikeForOneTag;
+    private int mode;
 
-    public bot(int likePerDay, int followPerDay, int unfollowPerDay, int commentPerDay, int mediaMinLike, int mediaMaxLike, String[] tagList, String[] tagBlacklist) {
+    public bot(int likePerDay, int followPerDay, int unfollowPerDay, int commentPerDay, int mediaMinLike, int mediaMaxLike, String[] tagList, String[] tagBlacklist,int maxLikeForOneTag,int mode) {
         this.likePerDay = likePerDay;
         this.followPerDay = followPerDay;
         this.unfollowPerDay = unfollowPerDay;
@@ -25,6 +27,8 @@ public class bot {
         this.mediaMaxLike = mediaMaxLike;
         this.tagList = tagList;
         this.tagBlacklist = tagBlacklist;
+        this.maxLikeForOneTag =maxLikeForOneTag;
+        this.mode = mode;
     }
 
     private String[] tagBlacklist;

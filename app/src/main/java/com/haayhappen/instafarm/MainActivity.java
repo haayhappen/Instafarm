@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     @Override
     public void runbot(bot bot) {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
-            runBotWithRetro(this.username, this.password,bot);
+            runBotWithRetro(this.username, this.password, bot);
         } else {
             Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
         }
@@ -415,17 +415,24 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
                 Toast.makeText(MainActivity.this, "Returned " + returnedResponse + "with PID:" + returnedIPD, Toast.LENGTH_LONG).show();
 //                //showProgress(false);
-                if (returnedResponse.trim().equals("1")) {
+                if (returnedResponse == null) {
+                    //user cant login
+                    //log in with a valid instagram account
+                    Toast.makeText(MainActivity.this, "Couldn't start Bot. PID is null", Toast.LENGTH_LONG).show();
+                }
+
+                else if (returnedResponse.trim().equals("1")) {
                     //user can succesfully login
                     Toast.makeText(MainActivity.this, "Bot is running with PID:" + returnedIPD, Toast.LENGTH_LONG).show();
 
                 }
-                if (returnedResponse.trim().equals("0")) {
+                else if (returnedResponse.trim().equals("0")) {
                     //user cant login
                     //log in with a valid instagram account
                     Toast.makeText(MainActivity.this, "Couldn't start Bot", Toast.LENGTH_LONG).show();
 
                 }
+
             }
 
             @Override
