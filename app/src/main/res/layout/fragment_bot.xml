@@ -46,7 +46,7 @@
                 app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/statusview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -55,7 +55,7 @@
                 android:layout_weight="1"
                 android:text="stopped"
                 android:textAlignment="center"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="@color/material_red_500"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintLeft_toRightOf="@+id/textView4" />
@@ -179,7 +179,7 @@
                 android:layout_height="40dp"
                 android:ems="10"
                 android:inputType="number"
-                android:text="50"
+                android:text="20"
                 android:textAlignment="center" />
 
             <EditText
@@ -188,7 +188,7 @@
                 android:layout_height="40dp"
                 android:ems="10"
                 android:inputType="number"
-                android:text="200"
+                android:text="50"
                 android:textAlignment="center" />
 
             <EditText
@@ -197,7 +197,7 @@
                 android:layout_height="40dp"
                 android:ems="10"
                 android:inputType="number"
-                android:text="200"
+                android:text="50"
                 android:textAlignment="center" />
         </LinearLayout>
 

@@ -5,11 +5,19 @@
 
     <item
         android:id="@+id/menu_main_setting"
-        android:icon="@drawable/settingswhite"
+        android:icon="@drawable/ic_exit_to_app_white_24px"
         android:orderInCategory="100"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:actionLayout="@layout/activity_main"
         android:title="Setting" />
+
+    <item
+        android:id="@+id/payment"
+        android:icon="@drawable/ic_payment_white_24px"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:actionLayout="@layout/activity_main"
+        android:title="@string/Payment" />
 
 
 </menu>

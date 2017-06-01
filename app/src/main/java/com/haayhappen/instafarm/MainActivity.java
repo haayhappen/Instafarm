@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,6 +41,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.R.attr.data;
+import static android.R.attr.fragment;
 
 public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, ProfileFragment.InteractionListener, BotFragment.InteractionListener {
 
@@ -73,6 +77,16 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
+
+    public FragmentRefreshListener getFragmentRefreshListener() {
+        return fragmentRefreshListener;
+    }
+
+    public void setFragmentRefreshListener(FragmentRefreshListener fragmentRefreshListener) {
+        this.fragmentRefreshListener = fragmentRefreshListener;
+    }
+
+    private FragmentRefreshListener fragmentRefreshListener;
 
 
     @Override
@@ -164,6 +178,8 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+
     }
 
     //Creates the Toolbars MENU
@@ -180,23 +196,43 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         switch (item.getItemId()) {
             case R.id.menu_main_setting:
 
-                // Firebase sign out
-                mAuth.signOut();
-                //Google sign out
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
+                MaterialDialog dialog = new MaterialDialog.Builder(this)
+                        .title(R.string.logout)
+                        .content(R.string.logoutcontent)
+                        .positiveText(R.string.agree)
+                        .negativeText(R.string.disagree)
+                        .onAny(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onResult(@NonNull Status status) {
-                                //TODO Check if status really is ok
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (which.toString() == "POSITIVE") {
+                                    // Firebase sign out
+                                    mAuth.signOut();
+                                    //Google sign out
+                                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                                            new ResultCallback<Status>() {
+                                                @Override
+                                                public void onResult(@NonNull Status status) {
+                                                    //TODO Check if status really is ok
+                                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                }
                             }
-                        });
+                        })
+                        .show();
 
 
-
+                /*
+                 */
                 return true;
+
+            case R.id.payment:
+
+                //...
+                Intent intent = new Intent(this, PaymentActivity.class);
+                startActivity(intent);
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -211,8 +247,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
         try {
             mGoogleApiClient.connect();
-        }catch (IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             Log.e("IllegalStateException", e.toString());
         }
     }
@@ -223,8 +258,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
         try {
             mGoogleApiClient.disconnect();
-        }catch (IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             Log.e("IllegalStateException", e.toString());
         }
         finish();
@@ -270,10 +304,10 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     public void runbot(bot bot) {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
             //TODO UNCOMMENT FOR PRODUCTION
-            // runBotWithRetro(this.username, this.password, bot);
-            runBotWithRetroTEST(this.username, this.password, bot);
+            runBotWithRetro(this.username, this.password, bot);
+            //runBotWithRetroTEST(this.username, this.password, bot);
         } else {
-            Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -285,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
             stopBotWithRetro(this.username, this.pid);
         } else {
-            Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -368,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                     // redirect to Main Activity page
                     //user can login
                     //TODO SAVE CREDENTIALS with shared preferences
-                    Toast.makeText(MainActivity.this, "Login succesful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Login succesful", Toast.LENGTH_SHORT).show();
                     ((Instafarm) getApplication()).setLoggedIn(true);
                     dialog.dismiss();
                 }
@@ -398,16 +432,18 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         });
     }
 
-    private void runBotWithRetroTEST(String username, String password, bot bot){
+    private void runBotWithRetroTEST(String username, String password, bot bot) {
+        if (getFragmentRefreshListener() != null) {
+            getFragmentRefreshListener().sendStatus(true);
+        }
+    }
 
+    interface updateStatus {
+        void sendStatus(boolean running);
     }
 
     private void runBotWithRetro(String username, String password, bot bot) {
-//
-//        username = "svenspieler";
-//        password = "5Keosniluro";
 
-        //Bot ist the config Object
 
         ApiInterface mApiService = this.getInterfaceService();
         Call<bot> mService = mApiService.runbot(username, password, bot);
@@ -425,14 +461,14 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                     //user cant login
                     //log in with a valid instagram account
                     Toast.makeText(MainActivity.this, "Couldn't start Bot. PID is null", Toast.LENGTH_LONG).show();
-                }
-
-                else if (returnedResponse.trim().equals("1")) {
+                } else if (returnedResponse.trim().equals("1")) {
                     //user can succesfully login
+                    if (getFragmentRefreshListener() != null) {
+                        getFragmentRefreshListener().sendStatus(true);
+                    }
                     Toast.makeText(MainActivity.this, "Bot is running with PID:" + returnedIPD, Toast.LENGTH_LONG).show();
 
-                }
-                else if (returnedResponse.trim().equals("0")) {
+                } else if (returnedResponse.trim().equals("0")) {
                     //user cant login
                     //log in with a valid instagram account
                     Toast.makeText(MainActivity.this, "Couldn't start Bot", Toast.LENGTH_LONG).show();
@@ -464,7 +500,9 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                 if (returnedResponse.trim().equals("0")) {
                     //user can succesfully login
                     Toast.makeText(mContext, "Bot with PID:" + PID + " stopped.", Toast.LENGTH_LONG).show();
-
+                    if (getFragmentRefreshListener() != null) {
+                        getFragmentRefreshListener().sendStatus(false);
+                    }
                 }
                 if (returnedResponse.trim().equals("1")) {
                     //user cant login

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -48,6 +50,8 @@ public class BotFragment extends Fragment {
     EditText unfollowcount;
     EditText commentcount;
 
+    TextView statusview;
+
     TagsEditText tagsEditText;
     TagContainerLayout mTagContainerLayout;
     Button addtagbutton;
@@ -57,6 +61,11 @@ public class BotFragment extends Fragment {
     private String mParam2;
 
     InteractionListener activityCommander;
+
+
+    public void sendStatus(boolean running) {
+
+    }
 
     public interface InteractionListener {
         void runbot(bot bot);
@@ -179,7 +188,25 @@ public class BotFragment extends Fragment {
             }
         });
 
+        statusview = (TextView) view.findViewById(R.id.statusview);
 
+        ((MainActivity) getActivity()).setFragmentRefreshListener(new FragmentRefreshListener() {
+            @Override
+            public void sendStatus(boolean status) {
+                if (status) {
+                    startButton.setEnabled(false);
+                    stopBotButton.setEnabled(true);
+                    statusview.setText("running");
+                    statusview.setTextColor(getResources().getColor(R.color.material_green_500));
+
+                } else if (!status) {
+                    startButton.setEnabled(true);
+                    stopBotButton.setEnabled(false);
+                    statusview.setText("stopped");
+                    statusview.setTextColor(getResources().getColor(R.color.material_red_500));
+                }
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }
@@ -220,23 +247,20 @@ public class BotFragment extends Fragment {
         int unfollows = 0;
         int comments = 0;
 
-
-        //Evaluate Switchges Issue #1
-        if (likeswitch.isChecked()){
+        //Evaluate Switches Issue #1
+        if (likeswitch.isChecked()) {
             likes = Integer.parseInt(likecount.getText().toString());
         }
-        if (followswitch.isChecked()){
+        if (followswitch.isChecked()) {
             follows = Integer.parseInt(followcount.getText().toString());
         }
-        if (unfollowswitch.isChecked()){
+        if (unfollowswitch.isChecked()) {
             unfollows = Integer.parseInt(unfollowcount.getText().toString());
         }
-        if (commentswitch.isChecked()){
+        if (commentswitch.isChecked()) {
             comments = Integer.parseInt(commentcount.getText().toString());
         }
-
-
-            int mode = 0;
+        int mode = 0;
         int maxLikeForOneTag = 50;
         int minlikes = 5;
         int maxlikes = 50;

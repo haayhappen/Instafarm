@@ -67,4 +67,8 @@
     <string name="input_content">Add a hashtag (without #)</string>
     <string name="hashtag_hint">photooftheday</string>
     <string name="input_prefill" />
+    <string name="logoutcontent">Do you really want to sign out from your Google Account?</string>
+    <string name="logout">Logout?</string>
+    <string name="agree">Yes</string>
+    <string name="disagree">No</string>
 </resources>
