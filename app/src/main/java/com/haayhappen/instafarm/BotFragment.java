@@ -117,6 +117,7 @@ public class BotFragment extends Fragment {
         unfollowcount = (EditText) view.findViewById(R.id.unfollowcount);
         commentcount = (EditText) view.findViewById(R.id.commentcount);
 
+
         //tagsEditText = (TagsEditText) view.findViewById(R.id.tagsEditText);
         final ArrayList<String> tags = new ArrayList<>();
         //TagView
