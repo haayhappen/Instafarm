@@ -1,9 +1,11 @@
 package com.haayhappen.instafarm;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import mabbas007.tagsedittext.TagsEditText;
@@ -54,6 +59,7 @@ public class BotFragment extends Fragment {
 
     TagsEditText tagsEditText;
     TagContainerLayout mTagContainerLayout;
+    Button addtagbutton;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -128,8 +134,13 @@ public class BotFragment extends Fragment {
         }
 
         mTagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerLayout);
-        mTagContainerLayout.setTags(tags);
-        //mTagContainerLayout.setTags();
+        //mTagContainerLayout.setTags(tags);
+        // Set customize theme
+        mTagContainerLayout.setTheme(ColorFactory.NONE);
+        //tag backgroundcolor
+        //mTagContainerLayout.setTagBackgroundColor(Color.TRANSPARENT);
+        //mTagContainerLayout.setTags("sample");
+        mTagContainerLayout.addTag("sample");
         mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
 
             @Override
@@ -148,8 +159,18 @@ public class BotFragment extends Fragment {
             }
         });
 
+        addtagbutton =(Button) view.findViewById(R.id.addtagbutton);
+        addtagbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTagClicked(v);
+            }
+        });
+
+
         stopBotButton = (Button) view.findViewById(R.id.stopBotButton);
         stopBotButton.setEnabled(false);
+
         startButton = (Button) view.findViewById(R.id.runBotButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +193,23 @@ public class BotFragment extends Fragment {
         return view;
     }
 
+    private void addTagClicked(View v) {
+        //Add Tag has been clicked
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.addtag)
+                .content(R.string.input_content)
+                .inputRangeRes(1, 20, R.color.material_red_500)
+                //.inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .input(R.string.hashtag_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        // add to hastag list
+                            mTagContainerLayout.addTag(input+"");
+                    }
+                }).show();
+
+    }
+
     private void stopBotButtonClicked(View v) {
         Instafarm ins = (Instafarm) new Instafarm();
         boolean loggedin = ins.isLoggedIn();
@@ -180,7 +218,6 @@ public class BotFragment extends Fragment {
 //        this.startButton.setEnabled(true);
         activityCommander.stopbot();
     }
-
 
     private void runBotButtonClicked(View v) {
 //TODO validate switches -->if !checked set values to null
