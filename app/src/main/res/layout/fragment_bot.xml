@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     tools:context="com.haayhappen.instafarm.BotFragment">
+    <!--xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"-->
+
 
     <TextView
         android:id="@+id/textView4"
@@ -166,21 +167,36 @@
     </LinearLayout>
 
 
-    <mabbas007.tagsedittext.TagsEditText
-        android:id="@+id/tagsEditText"
-        TagsEditText:allowSpaceInTag="true"
-        TagsEditText:tagsBackground="@drawable/square"
-        TagsEditText:tagsCloseImageLeft="@drawable/dot"
-        TagsEditText:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
-        TagsEditText:tagsCloseImageRight="@drawable/tag_close"
-        TagsEditText:tagsTextColor="@color/blackOlive"
-        TagsEditText:tagsTextSize="@dimen/defaultTagsTextSize"
+    <!--<mabbas007.tagsedittext.TagsEditText-->
+        <!--android:id="@+id/tagsEditText"-->
+        <!--TagsEditText:allowSpaceInTag="true"-->
+        <!--TagsEditText:tagsBackground="@drawable/square"-->
+        <!--TagsEditText:tagsCloseImageLeft="@drawable/dot"-->
+        <!--TagsEditText:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"-->
+        <!--TagsEditText:tagsCloseImageRight="@drawable/tag_close"-->
+        <!--TagsEditText:tagsTextColor="@color/blackOlive"-->
+        <!--TagsEditText:tagsTextSize="@dimen/defaultTagsTextSize"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/linearLayout"-->
+        <!--android:layout_marginLeft="16dp"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent" />-->
+    <co.lujun.androidtagview.TagContainerLayout
+        android:id="@+id/tagcontainerLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_margin="0dp"
+        android:padding="10dp"
+        app:container_enable_drag="true"
+        app:horizontal_interval="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:tag_clickable="true"
+        app:tag_theme="none"
+        app:vertical_interval="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="65dp" />
 
 
     <LinearLayout

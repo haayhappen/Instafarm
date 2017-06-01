@@ -269,7 +269,9 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     @Override
     public void runbot(bot bot) {
         if (((Instafarm) this.getApplication()).isLoggedIn()) {
-            runBotWithRetro(this.username, this.password, bot);
+            //TODO UNCOMMENT FOR PRODUCTION
+            // runBotWithRetro(this.username, this.password, bot);
+            runBotWithRetroTEST(this.username, this.password, bot);
         } else {
             Toast.makeText(MainActivity.this, "Log in first!", Toast.LENGTH_LONG).show();
         }
@@ -394,6 +396,10 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                 dialog.dismiss();
             }
         });
+    }
+
+    private void runBotWithRetroTEST(String username, String password, bot bot){
+
     }
 
     private void runBotWithRetro(String username, String password, bot bot) {

@@ -12,11 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import mabbas007.tagsedittext.TagsEditText;
 
 import static android.R.attr.max;
 import static android.R.attr.mode;
 import static android.R.attr.tag;
+import static android.R.id.list;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 
@@ -46,6 +53,7 @@ public class BotFragment extends Fragment {
     EditText commentcount;
 
     TagsEditText tagsEditText;
+    TagContainerLayout mTagContainerLayout;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -109,7 +117,34 @@ public class BotFragment extends Fragment {
         unfollowcount = (EditText) view.findViewById(R.id.unfollowcount);
         commentcount = (EditText) view.findViewById(R.id.commentcount);
 
-        tagsEditText = (TagsEditText) view.findViewById(R.id.tagsEditText);
+        //tagsEditText = (TagsEditText) view.findViewById(R.id.tagsEditText);
+        final ArrayList<String> tags = new ArrayList<>();
+        //TagView
+        String[] values=new String[]{"photooftheday","l4l","f4f"};
+        for (int i=0;i <values.length;i++){
+            tags.add(values[i]);
+        }
+
+        mTagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerLayout);
+        mTagContainerLayout.setTags(tags);
+        //mTagContainerLayout.setTags();
+        mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
+
+            @Override
+            public void onTagClick(int position, String text) {
+                // ...
+            }
+
+            @Override
+            public void onTagLongClick(final int position, String text) {
+                // ...
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+                // ...
+            }
+        });
 
         stopBotButton = (Button) view.findViewById(R.id.stopBotButton);
         stopBotButton.setEnabled(false);
@@ -151,19 +186,7 @@ public class BotFragment extends Fragment {
         int follows;
         int unfollows;
         int comments;
-        /*
-        String[] taglist = null;
-        //check if there are any tags
-        if (tagsEditText != null) {
-            taglist = tagsEditText.getText().toString().split("\\s+");
-            for (int i = 0; i < taglist.length; i++) {
-                // You may want to check for a non-word character before blindly
-                // performing a replacement
-                // It may also be necessary to adjust the character class
-                taglist[i] = taglist[i].replaceAll("[^\\w]", "");
-            }
-        }
-        */
+
         likes = Integer.parseInt(likecount.getText().toString());
         follows = Integer.parseInt(followcount.getText().toString());
         unfollows = Integer.parseInt(unfollowcount.getText().toString());
@@ -175,8 +198,8 @@ public class BotFragment extends Fragment {
         int minlikes = 5;
         int maxlikes = 50;
         String[] blacklist = {"porn", "sex"};
-        String[] taglist = {"cute", "photooftheday"};
-
+        List<String> list = mTagContainerLayout.getTags();
+        String[] taglist = list.toArray(new String[list.size()]);
 
         bot botWithConfig = new bot(likes, follows, unfollows, comments, minlikes, maxlikes, taglist, blacklist,maxLikeForOneTag,mode);
         activityCommander.runbot(botWithConfig);
