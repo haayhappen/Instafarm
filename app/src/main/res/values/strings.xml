@@ -71,4 +71,11 @@
     <string name="logout">Logout?</string>
     <string name="agree">Yes</string>
     <string name="disagree">No</string>
+
+    <string name="failed_token">Client Failed to retrieve token from server</string>
+    <string name="BraintreeFragment_initialized">BraintreeFragment is ready to use</string>
+    <string name="issues_with_authorization">There was an issue with your authorization string</string>
+    <string name="token_failed">Fail to retrieve client token </string>
+    <string name="buy_brand_new_laptop">BUY BRAND NEW LAPTOP</string>
+    <string name="buy_now">BUY NOW</string>
 </resources>

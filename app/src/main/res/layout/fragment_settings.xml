@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="6dp">
+        tools:layout_editor_absoluteY="6dp"
+        android:id="@+id/linearLayout3">
 
         <TextView
             android:id="@+id/textView2"
@@ -113,5 +114,18 @@
             tools:layout_editor_absoluteX="185dp"
             tools:layout_editor_absoluteY="212dp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="We don't steal your password. \n It will only be used to log into Instagram."
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
 </android.support.constraint.ConstraintLayout>

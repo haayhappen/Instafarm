@@ -3,7 +3,6 @@
     package="com.haayhappen.instafarm">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name=".Instafarm"
@@ -21,7 +20,8 @@
         </activity>
         <activity
             android:name=".PaymentActivity"
-            android:label="@string/Payment" />
+            android:label="@string/Payment"
+        />
 
         <activity
             android:name=".LoginActivity">
@@ -29,6 +29,16 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="${applicationId}.braintree" />
             </intent-filter>
         </activity>
 

@@ -2,6 +2,7 @@ package com.haayhappen.instafarm;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -16,6 +17,11 @@ public interface ApiInterface {
     @POST("stop")
     Call<bot> stopbot(@Query("username") String username, @Query("PID") String PID);
 
+    @GET("clienttoken")
+    Call<ClientToken> gettoken();
+
+    @POST("paymentnonce")
+    Call<Nonce> sendNonce(@Query("nonce") String nonce);
     //@GET("hello/{username}")
     //Call<test> hello(@Path("username") String username);
 }

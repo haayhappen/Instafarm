@@ -16,6 +16,7 @@
     <color name="blackOlive">#005c99</color>
     <color name="material_red_500">#f44336</color>
     <color name="material_green_500">#4caf50</color>
+    <color name="colorBackground">#DFD1D0</color>
 
     <!-- FOR alternative colors scheme
         <color name="colorPrimary">#039BE5</color>
