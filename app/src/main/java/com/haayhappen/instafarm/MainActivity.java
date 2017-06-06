@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             @Override
             public void onFailure(Call<bot> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(MainActivity.this, "Please check Internet conditions -> couldn't start bot", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Please check Internet conditions -> couldn't start bot", Toast.LENGTH_SHORT).show();
             }
         });
     }
