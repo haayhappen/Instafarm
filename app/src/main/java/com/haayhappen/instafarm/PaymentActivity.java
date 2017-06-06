@@ -3,29 +3,18 @@ package com.haayhappen.instafarm;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
-import com.anjlab.android.iab.v3.TransactionDetails;
-import com.braintreepayments.api.BraintreeFragment;
 import com.braintreepayments.api.dropin.DropInActivity;
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.exceptions.InvalidArgumentException;
-import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
 
-import cz.msebera.android.httpclient.entity.mime.Header;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +26,7 @@ public class PaymentActivity extends Activity /*implements BillingProcessor.IBil
 
     //private static final int REQUEST_CODE = 1;
     private static final int BRAINTREE_REQUEST_CODE = 4949;
-    BillingProcessor bp;
+//    BillingProcessor bp;
     Button goldButton;
     Button platinumButton;
     Button createToken;
@@ -248,8 +237,8 @@ public class PaymentActivity extends Activity /*implements BillingProcessor.IBil
 
     @Override
     public void onDestroy() {
-        if (bp != null)
-            bp.release();
+//        if (bp != null)
+//            bp.release();
 
         super.onDestroy();
     }
