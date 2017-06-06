@@ -379,17 +379,20 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                     // redirect to Main Activity page
                     //user can login
                     //TODO SAVE CREDENTIALS with shared preferences
-                    Toast.makeText(MainActivity.this, "Login succesful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                     ((Instafarm) getApplication()).setLoggedIn(true);
                     dialog.dismiss();
+                    //TODO CHECK IF BOT IS RUNNING AND UPDATE UI (Bot buttons)
                 }
                 if (returnedResponse.trim().equals("2")) {
                     // redirect to Main Activity page
                     //user can login
                     //TODO SAVE CREDENTIALS with shared preferences
-                    Toast.makeText(MainActivity.this, "Registration succesful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Registration successful", Toast.LENGTH_LONG).show();
                     ((Instafarm) getApplication()).setLoggedIn(true);
                     dialog.dismiss();
+                    //TODO CHECK IF BOT IS RUNNING AND UPDATE UI (Bot buttons)
+
                 }
                 if (returnedResponse.trim().equals("0")) {
                     // use the registration button to register
