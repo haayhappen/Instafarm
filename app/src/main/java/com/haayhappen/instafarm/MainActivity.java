@@ -45,7 +45,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.R.attr.data;
 import static android.R.attr.fragment;
 
-public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, ProfileFragment.InteractionListener, BotFragment.InteractionListener {
+public class MainActivity extends AppCompatActivity implements SettingsFragment.LoginListener, BotFragment.InteractionListener {
 
     //Debug TAG
     private final String TAG = "MainActivity";
@@ -73,10 +73,10 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     MaterialDialog dialog;
     ///////////////////////////////////////
 
-    //Firebase
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleApiClient mGoogleApiClient;
+//    //Firebase
+//    private FirebaseAuth mAuth;
+//    private FirebaseAuth.AuthStateListener mAuthListener;
+//    private GoogleApiClient mGoogleApiClient;
 
     public FragmentRefreshListener getFragmentRefreshListener() {
         return fragmentRefreshListener;
@@ -118,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                     bottomBar.selectTabAtPosition(0);
                 } else if (position == 1) {
                     bottomBar.selectTabAtPosition(1);
-                } else if (position == 2) {
-                    bottomBar.selectTabAtPosition(2);
-                    bottomBar.setActiveTabColor(Color.parseColor("#FFFFFF"));
-                }
+                }// else if (position == 1) {
+//                    bottomBar.selectTabAtPosition(1);
+//                    bottomBar.setActiveTabColor(Color.parseColor("#FFFFFF"));
+//                }
             }
 
             @Override
@@ -142,11 +142,11 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 //                    bot.setBadgeCount(5);
 //                    Remove the badge when you're done with it.
 //                    nearby.removeBadge();
-                } else if (tabId == R.id.tab_profile) {
+                } /*else if (tabId == R.id.tab_profile) {
                     vpPager.setCurrentItem(1);
 
-                } else if (tabId == R.id.tab_bot) {
-                    vpPager.setCurrentItem(2);
+                }*/ else if (tabId == R.id.tab_bot) {
+                    vpPager.setCurrentItem(1);
                 }
             }
         });
@@ -162,23 +162,23 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             }
         });
         ///////////////////////////////////////////////////////////////////////
-
-// [START config_signin]
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        // [END config_signin]
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        // [START initialize_auth]
-        mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-
+//
+//// [START config_signin]
+//        // Configure Google Sign In
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//        // [END config_signin]
+//
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .build();
+//
+//        // [START initialize_auth]
+//        mAuth = FirebaseAuth.getInstance();
+//        // [END initialize_auth]
+//
 
     }
 
@@ -204,21 +204,8 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
                         .onAny(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                if (which.toString() == "POSITIVE") {
-                                    // Firebase sign out
-                                    mAuth.signOut();
-                                    //Google sign out
-                                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                                            new ResultCallback<Status>() {
-                                                @Override
-                                                public void onResult(@NonNull Status status) {
-                                                    //TODO Check if status really is ok
-                                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    startActivity(intent);
-                                                }
-                                            });
-                                }
+                                //...
+                                if (which.toString() == "POSITIVE") finish();
                             }
                         })
                         .show();
@@ -244,24 +231,24 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
     @Override
     protected void onStart() {
         super.onStart();
-
-        try {
-            mGoogleApiClient.connect();
-        } catch (IllegalStateException e) {
-            Log.e("IllegalStateException", e.toString());
-        }
+//
+//        try {
+//            mGoogleApiClient.connect();
+//        } catch (IllegalStateException e) {
+//            Log.e("IllegalStateException", e.toString());
+//        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        try {
-            mGoogleApiClient.disconnect();
-        } catch (IllegalStateException e) {
-            Log.e("IllegalStateException", e.toString());
-        }
-        finish();
+//
+//        try {
+//            mGoogleApiClient.disconnect();
+//        } catch (IllegalStateException e) {
+//            Log.e("IllegalStateException", e.toString());
+//        }
+        //finish();
     }
 
     //Handles the On back button through the fragments
@@ -288,16 +275,16 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
         registrationProcessWithRetrofit(username, password);
     }
 
-    //says hello from profile tab
-    @Override
-    public void sayHello() {
-
-//        this.username =username;
-//        this.password =password;
-//        Log.d("MAIN", "username: "+username+" password: "+ password);
-
-        // retroHello(this.username);
-    }
+//    //says hello from profile tab
+//    @Override
+//    public void sayHello() {
+//
+////        this.username =username;
+////        this.password =password;
+////        Log.d("MAIN", "username: "+username+" password: "+ password);
+//
+//        // retroHello(this.username);
+//    }
 
     //ovverides runbot method from botfragment,executed when runbot button is clicked)
     @Override
@@ -325,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
 
     //Pager Adapter handles swiping between fragments
     public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 3;
+        private static int NUM_ITEMS = 2;
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -343,9 +330,9 @@ public class MainActivity extends AppCompatActivity implements SettingsFragment.
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return SettingsFragment.newInstance("Settings");
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return ProfileFragment.newInstance("Profile");
-                case 2: // Fragment # 1 - This will show SecondFragment
+//                case 1: // Fragment # 0 - This will show FirstFragment different title
+//                    return ProfileFragment.newInstance("Profile");
+                case 1: // Fragment # 1 - This will show SecondFragment
                     return BotFragment.newInstance("Bot");
                 default:
                     return null;

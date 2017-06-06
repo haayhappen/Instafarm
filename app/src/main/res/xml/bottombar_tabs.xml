@@ -7,12 +7,12 @@
             title="Settings"
             barColorWhenSelected="@color/colorPrimary"
             badgeBackgroundColor="#FFFFFF"/>
-        <tab
-            id="@+id/tab_profile"
-            icon="@drawable/profile1"
-            title="Profile"
-            barColorWhenSelected="@color/colorPrimary"
-            badgeBackgroundColor="#FFFFFF"/>
+        <!--<tab-->
+            <!--id="@+id/tab_profile"-->
+            <!--icon="@drawable/profile1"-->
+            <!--title="Profile"-->
+            <!--barColorWhenSelected="@color/colorPrimary"-->
+            <!--badgeBackgroundColor="#FFFFFF"/>-->
         <tab
             id="@+id/tab_bot"
             icon="@drawable/starwhite"
